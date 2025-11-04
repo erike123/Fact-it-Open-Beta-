@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fact-It - AI Fact Checker</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with Logo -->
+      <header class="header">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 16l4 4 8-8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1>Fact-It</h1>
+        </div>
+        <p class="tagline">AI-Powered Fact Checking</p>
+      </header>
+
+      <!-- Trial Status Banner -->
+      <section class="trial-banner" id="trial-banner">
+        <div class="trial-info">
+          <div class="trial-icon">⏰</div>
+          <div class="trial-text">
+            <div class="trial-status" id="trial-status">Loading...</div>
+            <div class="trial-subtitle" id="trial-subtitle">Free trial active</div>
+          </div>
+        </div>
+        <div class="trial-progress-bar">
+          <div class="trial-progress-fill" id="trial-progress"></div>
+        </div>
+      </section>
+
+      <!-- Usage Stats -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Checks Today</div>
+          <div class="stat-value" id="checks-today">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Checks</div>
+          <div class="stat-value" id="total-checks">0</div>
+        </div>
+      </section>
+
+      <!-- Quick Settings -->
+      <section class="settings-section">
+        <h2>Settings</h2>
+
+        <div class="setting-item">
+          <label class="toggle-label">
+            <input type="checkbox" id="auto-check" checked class="toggle-input" />
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">Auto-check posts</span>
+          </label>
+          <small class="setting-hint">Automatically fact-check posts as you scroll</small>
+        </div>
+
+        <div class="setting-item">
+          <label for="confidence-threshold">
+            Confidence Threshold: <span id="threshold-value" class="threshold-value">70</span>%
+          </label>
+          <input
+            type="range"
+            id="confidence-threshold"
+            min="0"
+            max="100"
+            value="70"
+            step="5"
+            class="range-slider"
+          />
+          <small class="setting-hint">Only show results above this confidence level</small>
+        </div>
+      </section>
+
+      <!-- Trial Expired State (hidden by default) -->
+      <section class="trial-expired" id="trial-expired" style="display: none;">
+        <div class="expired-icon">⏰</div>
+        <h2>Trial Expired</h2>
+        <p>Your 30-day trial has ended. Thank you for using Fact-It!</p>
+        <div class="expired-options">
+          <p><strong>Option 1:</strong> Add your own API keys to continue</p>
+          <button class="btn-secondary" id="show-advanced">Configure API Keys</button>
+          <p class="or-divider">OR</p>
+          <p><strong>Option 2:</strong> Upgrade to Pro (Coming Soon!)</p>
+          <button class="btn-primary" disabled>Pro Plan - $4.99/mo</button>
+          <small>Unlimited checks, multi-provider verification, priority support</small>
+        </div>
+      </section>
+
+      <!-- Advanced Settings (Collapsed) -->
+      <details class="advanced-settings" id="advanced-settings">
+        <summary>Advanced Settings</summary>
+        <div class="advanced-content">
+          <p class="help-text">Configure your own AI provider API keys for unlimited usage after trial.</p>
+
+          <!-- Anthropic Provider -->
+          <div class="provider-section">
+            <div class="provider-header">
+              <label class="provider-toggle">
+                <input type="checkbox" id="anthropic-enabled" class="provider-checkbox" />
+                <span class="provider-name">Anthropic Claude</span>
+              </label>
+              <span class="config-status" id="anthropic-status"></span>
+            </div>
+            <div class="provider-config" id="anthropic-config">
+              <div class="form-group">
+                <label for="anthropic-api-key">API Key</label>
+                <input
+                  type="password"
+                  id="anthropic-api-key"
+                  placeholder="sk-ant-..."
+                  autocomplete="off"
+                  class="api-key-input"
+                />
+                <button class="btn-test" id="anthropic-test">Test Key</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- OpenAI Provider -->
+          <div class="provider-section">
+            <div class="provider-header">
+              <label class="provider-toggle">
+                <input type="checkbox" id="openai-enabled" class="provider-checkbox" />
+                <span class="provider-name">OpenAI</span>
+              </label>
+              <span class="config-status" id="openai-status"></span>
+            </div>
+            <div class="provider-config" id="openai-config">
+              <div class="form-group">
+                <label for="openai-api-key">API Key</label>
+                <input
+                  type="password"
+                  id="openai-api-key"
+                  placeholder="sk-..."
+                  autocomplete="off"
+                  class="api-key-input"
+                />
+                <button class="btn-test" id="openai-test">Test Key</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Perplexity Provider -->
+          <div class="provider-section">
+            <div class="provider-header">
+              <label class="provider-toggle">
+                <input type="checkbox" id="perplexity-enabled" class="provider-checkbox" />
+                <span class="provider-name">Perplexity</span>
+              </label>
+              <span class="config-status" id="perplexity-status"></span>
+            </div>
+            <div class="provider-config" id="perplexity-config">
+              <div class="form-group">
+                <label for="perplexity-api-key">API Key</label>
+                <input
+                  type="password"
+                  id="perplexity-api-key"
+                  placeholder="pplx-..."
+                  autocomplete="off"
+                  class="api-key-input"
+                />
+                <button class="btn-test" id="perplexity-test">Test Key</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="save-settings">Save Settings</button>
+        </div>
+      </details>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <a href="#" id="clear-cache">Clear Cache</a>
+        <span class="divider">•</span>
+        <a href="https://github.com/yourorg/fact-it" target="_blank">Help</a>
+        <span class="divider">•</span>
+        <a href="#" id="about">About</a>
+      </footer>
+    </div>
+
+    <script src="popup.ts" type="module"></script>
+  </body>
+</html>

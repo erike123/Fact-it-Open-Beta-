@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fact-It Company Dashboard</title>
+    <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" href="company-dashboard.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with Company Info -->
+      <header class="company-header">
+        <div class="company-logo">
+          <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 16l4 4 8-8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="company-info">
+          <h1 id="company-name">Loading...</h1>
+          <p class="company-subtitle">
+            <span id="employee-count">-</span> employees protected •
+            <span id="threats-blocked">-</span> threats blocked
+          </p>
+        </div>
+        <button class="btn-icon" id="personal-view-btn" title="Switch to personal view">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+      </header>
+
+      <main>
+        <!-- Key Metrics Grid -->
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon critical">⚠️</div>
+            <div class="metric-content">
+              <div class="metric-value" id="critical-threats">0</div>
+              <div class="metric-label">Critical Threats</div>
+              <div class="metric-change" id="critical-change">Last 7 days</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon success">✓</div>
+            <div class="metric-content">
+              <div class="metric-value" id="total-checks">0</div>
+              <div class="metric-label">Total Fact-Checks</div>
+              <div class="metric-change" id="checks-change">Last 30 days</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon warning">📊</div>
+            <div class="metric-content">
+              <div class="metric-value" id="risk-score">-</div>
+              <div class="metric-label">Company Risk Score</div>
+              <div class="metric-change" id="risk-trend">Lower is better</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon info">👥</div>
+            <div class="metric-content">
+              <div class="metric-value" id="active-users">0</div>
+              <div class="metric-label">Active Users</div>
+              <div class="metric-change" id="active-change">Last 30 days</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Threats -->
+        <section class="dashboard-section">
+          <div class="section-header">
+            <h2>🚨 Recent Threats Blocked</h2>
+            <span class="section-badge" id="threats-badge">0</span>
+          </div>
+          <div class="threats-list" id="threats-list">
+            <div class="empty-state">
+              <div class="empty-icon">🛡️</div>
+              <p>No threats detected yet</p>
+              <small>Your team is protected by Fact-It</small>
+            </div>
+          </div>
+        </section>
+
+        <!-- Employee Activity -->
+        <section class="dashboard-section">
+          <div class="section-header">
+            <h2>👥 Team Activity</h2>
+            <span class="section-badge" id="activity-badge">0</span>
+          </div>
+          <div class="employee-list" id="employee-list">
+            <div class="empty-state">
+              <div class="empty-icon">👤</div>
+              <p>No activity yet</p>
+              <small>Employees will appear here once they start using Fact-It</small>
+            </div>
+          </div>
+        </section>
+
+        <!-- Upgrade Section (Shown when 10+ employees detected) -->
+        <section class="upgrade-section" id="upgrade-section" style="display: none;">
+          <div class="upgrade-card">
+            <div class="upgrade-header">
+              <div class="upgrade-icon">💎</div>
+              <div class="upgrade-title">
+                <h3>Upgrade to Enterprise</h3>
+                <p>Unlock advanced security features for your team</p>
+              </div>
+            </div>
+            <div class="upgrade-features">
+              <div class="feature-item">
+                <span class="feature-check">✓</span>
+                <span>Centralized management dashboard</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-check">✓</span>
+                <span>SIEM integration & SOC alerts</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-check">✓</span>
+                <span>Custom compliance reports (NIS2, ISO 27001)</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-check">✓</span>
+                <span>Priority Bulgarian language support</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-check">✓</span>
+                <span>EU grant application assistance</span>
+              </div>
+            </div>
+            <div class="upgrade-pricing">
+              <div class="pricing-info">
+                <span class="pricing-label">Starting at</span>
+                <span class="pricing-value" id="enterprise-price">€99/month</span>
+                <span class="pricing-note">vs €35,000/year traditional security</span>
+              </div>
+              <button class="btn-upgrade" id="enterprise-upgrade-btn">
+                Get Enterprise Quote →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- MSSP Section (Shown when 50+ employees detected) -->
+        <section class="mssp-section" id="mssp-section" style="display: none;">
+          <div class="mssp-card">
+            <div class="mssp-badge">MSSP TIER</div>
+            <h3>🏢 Managed Security Service Provider</h3>
+            <p>For larger organizations with 50+ employees</p>
+            <ul class="mssp-features">
+              <li>✓ White-label option for your brand</li>
+              <li>✓ Multi-tenant management</li>
+              <li>✓ 24/7 Bulgarian SOC team</li>
+              <li>✓ Custom threat intelligence feeds</li>
+              <li>✓ API access for custom integrations</li>
+            </ul>
+            <button class="btn-secondary" id="mssp-contact-btn">
+              Contact Sales →
+            </button>
+          </div>
+        </section>
+
+        <!-- Grant Application Section -->
+        <section class="grant-section">
+          <div class="grant-card">
+            <div class="grant-icon">🇪🇺</div>
+            <div class="grant-content">
+              <h3>EU Cybersecurity Grants</h3>
+              <p>We can help you apply for grants covering 50-75% of cybersecurity costs</p>
+              <div class="grant-programs">
+                <div class="grant-item">
+                  <strong>Digital Europe Programme</strong>
+                  <span>€50k-€200k</span>
+                </div>
+                <div class="grant-item">
+                  <strong>Bulgarian Innovation Fund</strong>
+                  <span>50k-100k лв</span>
+                </div>
+                <div class="grant-item">
+                  <strong>Horizon Europe</strong>
+                  <span>€100k-€2M</span>
+                </div>
+              </div>
+              <button class="btn-secondary" id="grant-help-btn">
+                Learn More About Grants →
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="dashboard-footer">
+        <button class="footer-link" id="export-report-btn">Export Report</button>
+        <span class="divider">•</span>
+        <button class="footer-link" id="settings-btn">Settings</button>
+        <span class="divider">•</span>
+        <span class="version-info" id="version-info">v0.1.0</span>
+      </footer>
+    </div>
+
+    <script type="module" src="company-dashboard.ts"></script>
+  </body>
+</html>

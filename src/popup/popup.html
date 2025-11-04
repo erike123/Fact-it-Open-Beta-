@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fact-It Settings</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Fact-It</h1>
+        <p class="subtitle">Real-time fact-checking extension</p>
+      </header>
+
+      <main>
+        <!-- Free Service Banner with Daily Limit -->
+        <section class="free-banner">
+          <div class="free-banner-header">
+            <div style="font-size: 32px; line-height: 1;">🆓</div>
+            <div style="flex: 1;">
+              <div style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">100% FREE Forever!</div>
+              <div style="font-size: 12px; opacity: 0.9;">Powered by Groq AI</div>
+            </div>
+          </div>
+
+          <!-- Daily Usage Stats -->
+          <div class="daily-usage">
+            <div class="usage-header">
+              <span class="usage-label">Today's Usage</span>
+              <span class="usage-count" id="usage-count">-/100</span>
+            </div>
+            <div class="usage-progress-bar">
+              <div class="usage-progress-fill" id="usage-progress-fill"></div>
+            </div>
+            <div class="usage-footer">
+              <span class="usage-remaining" id="usage-remaining">- checks remaining</span>
+              <span class="usage-reset" id="usage-reset">Resets at midnight</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pro Upgrade Section -->
+        <section class="pro-upgrade-banner" id="pro-upgrade-banner">
+          <div class="pro-content">
+            <div class="pro-icon">💎</div>
+            <div class="pro-text">
+              <div class="pro-title">Upgrade to Pro</div>
+              <div class="pro-subtitle">Unlimited premium fact-checking • Multi-AI verification</div>
+            </div>
+          </div>
+          <div class="pro-pricing" id="pro-pricing">
+            <div class="pricing-estimate">
+              <span class="pricing-label">Only:</span>
+              <span class="pricing-value" id="pricing-value">$9.99/mo</span>
+            </div>
+            <div class="pricing-features">
+              <small>✓ Unlimited fact-checks • ✓ Export reports • ✓ Priority support</small>
+            </div>
+          </div>
+          <button class="btn-pro" id="upgrade-btn">
+            <span>Upgrade on Website →</span>
+          </button>
+        </section>
+
+        <!-- License Key Activation Section (Hidden by default) -->
+        <section class="license-activation" id="license-activation" style="display: none;">
+          <div class="activation-header">
+            <h3>🔑 Activate Pro License</h3>
+            <p class="help-text">Enter the license key from your purchase confirmation</p>
+          </div>
+          <div class="form-group">
+            <label for="license-key-input">License Key:</label>
+            <div class="input-with-button">
+              <input
+                type="text"
+                id="license-key-input"
+                placeholder="FACTIT-XXXX-XXXX-XXXX"
+                autocomplete="off"
+              />
+              <button class="btn-activate" id="activate-license-btn">Activate</button>
+            </div>
+            <small class="help-text">
+              Don't have a key? <a href="#" id="get-license-link">Get one on our website</a>
+            </small>
+          </div>
+          <div id="activation-feedback" class="activation-feedback"></div>
+        </section>
+
+        <!-- Active Subscription Info (Hidden by default) -->
+        <section class="subscription-info" id="subscription-info" style="display: none;">
+          <div class="subscription-active">
+            <div class="sub-icon">✅</div>
+            <div class="sub-details">
+              <div class="sub-tier" id="sub-tier">Pro Subscription Active</div>
+              <div class="sub-expiry" id="sub-expiry">Renews: January 15, 2026</div>
+            </div>
+          </div>
+          <div class="sub-actions">
+            <button class="btn-secondary" id="manage-subscription-btn">Manage Subscription</button>
+          </div>
+        </section>
+
+        <section class="status">
+          <div class="status-indicator" id="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-text" id="status-text">Checking status...</span>
+          </div>
+        </section>
+
+        <section class="settings">
+          <h2>General Settings</h2>
+
+          <div class="form-group checkbox">
+            <label>
+              <input type="checkbox" id="auto-check" checked />
+              <span>Automatically check posts while scrolling</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="confidence-threshold">
+              Confidence Threshold: <span id="threshold-value">70</span>%
+            </label>
+            <input
+              type="range"
+              id="confidence-threshold"
+              min="0"
+              max="100"
+              value="70"
+              step="5"
+            />
+            <small class="help-text">
+              Only show results with confidence above this threshold
+            </small>
+          </div>
+
+          <details class="providers-section" id="providers-details">
+            <summary>
+              <h2>AI Providers</h2>
+            </summary>
+
+            <div class="providers-content">
+              <p class="help-text">Configure one or more AI providers for fact-checking. Multiple providers will run in parallel for cross-verification.</p>
+
+              <!-- Groq Provider (FREE) -->
+              <div class="provider-section">
+                <div class="provider-header">
+                  <label class="provider-toggle">
+                    <input type="checkbox" id="groq-enabled" class="provider-checkbox" />
+                    <span class="provider-name">Groq (FREE) 🆓</span>
+                  </label>
+                  <span class="config-status" id="groq-status"></span>
+                </div>
+                <div class="provider-config" id="groq-config">
+                  <div class="form-group">
+                    <label for="groq-api-key">
+                      API Key
+                      <span class="optional">(Llama 3.1 70B - 100% Free)</span>
+                    </label>
+                    <div class="input-with-button">
+                      <input
+                        type="password"
+                        id="groq-api-key"
+                        placeholder="gsk_..."
+                        autocomplete="off"
+                      />
+                      <button class="btn-test" id="test-groq">Test</button>
+                    </div>
+                    <small class="help-text">
+                      Get your FREE API key from
+                      <a href="https://console.groq.com/" target="_blank">
+                        console.groq.com
+                      </a>
+                      <br />
+                      ✨ 100% Free forever • No credit card required
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- OpenAI Provider -->
+              <div class="provider-section">
+                <div class="provider-header">
+                  <label class="provider-toggle">
+                    <input type="checkbox" id="openai-enabled" class="provider-checkbox" />
+                    <span class="provider-name">OpenAI</span>
+                  </label>
+                  <span class="config-status" id="openai-status"></span>
+                </div>
+                <div class="provider-config" id="openai-config">
+                  <div class="form-group">
+                    <label for="openai-api-key">
+                      API Key
+                      <span class="optional">(GPT-4o with built-in web search)</span>
+                    </label>
+                    <div class="input-with-button">
+                      <input
+                        type="password"
+                        id="openai-api-key"
+                        placeholder="sk-..."
+                        autocomplete="off"
+                      />
+                      <button class="btn-test" id="test-openai">Test</button>
+                    </div>
+                    <small class="help-text">
+                      Get your API key from
+                      <a href="https://platform.openai.com/api-keys" target="_blank">
+                        platform.openai.com
+                      </a>
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Anthropic Provider -->
+              <div class="provider-section">
+                <div class="provider-header">
+                  <label class="provider-toggle">
+                    <input type="checkbox" id="anthropic-enabled" class="provider-checkbox" />
+                    <span class="provider-name">Anthropic</span>
+                  </label>
+                  <span class="config-status" id="anthropic-status"></span>
+                </div>
+                <div class="provider-config" id="anthropic-config">
+                  <div class="form-group">
+                    <label for="anthropic-api-key">
+                      API Key
+                      <span class="optional">(Claude 3.5 with Brave Search)</span>
+                    </label>
+                    <div class="input-with-button">
+                      <input
+                        type="password"
+                        id="anthropic-api-key"
+                        placeholder="sk-ant-..."
+                        autocomplete="off"
+                      />
+                      <button class="btn-test" id="test-anthropic">Test</button>
+                    </div>
+                    <small class="help-text">
+                      Get your API key from
+                      <a href="https://console.anthropic.com" target="_blank">
+                        console.anthropic.com
+                      </a>
+                      <br />
+                      Note: $10 per 1,000 searches + token costs
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Perplexity Provider -->
+              <div class="provider-section">
+                <div class="provider-header">
+                  <label class="provider-toggle">
+                    <input type="checkbox" id="perplexity-enabled" class="provider-checkbox" />
+                    <span class="provider-name">Perplexity</span>
+                  </label>
+                  <span class="config-status" id="perplexity-status"></span>
+                </div>
+                <div class="provider-config" id="perplexity-config">
+                  <div class="form-group">
+                    <label for="perplexity-api-key">
+                      API Key
+                      <span class="optional">(Sonar Pro with real-time search)</span>
+                    </label>
+                    <div class="input-with-button">
+                      <input
+                        type="password"
+                        id="perplexity-api-key"
+                        placeholder="pplx-..."
+                        autocomplete="off"
+                      />
+                      <button class="btn-test" id="test-perplexity">Test</button>
+                    </div>
+                    <small class="help-text">
+                      Get your API key from
+                      <a href="https://www.perplexity.ai/settings/api" target="_blank">
+                        perplexity.ai/settings/api
+                      </a>
+                      <br />
+                      Note: Leading SimpleQA benchmark (F-score: 0.858)
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <section class="credits-section">
+          <details class="credits-details">
+            <summary>
+              <h3>Credits & Usage</h3>
+            </summary>
+
+            <div class="credits-content">
+              <p class="help-text">Monitor your API usage and credits for each provider. Note: Credit balance cannot be checked programmatically via API.</p>
+
+              <div class="provider-credits">
+                <div class="credit-card" id="openai-credits">
+                  <div class="credit-header">
+                    <h4>OpenAI</h4>
+                    <span class="credit-status" id="openai-credit-status">Not configured</span>
+                  </div>
+                  <div class="credit-info">
+                    <p>Check your usage and credits in the OpenAI dashboard:</p>
+                    <a href="https://platform.openai.com/usage" target="_blank" class="credit-link">
+                      View Usage Dashboard →
+                    </a>
+                  </div>
+                </div>
+
+                <div class="credit-card" id="anthropic-credits">
+                  <div class="credit-header">
+                    <h4>Anthropic</h4>
+                    <span class="credit-status" id="anthropic-credit-status">Not configured</span>
+                  </div>
+                  <div class="credit-info">
+                    <p>Check your credits and billing in the Claude Console:</p>
+                    <a href="https://console.anthropic.com/settings/plans" target="_blank" class="credit-link">
+                      View Credits & Billing →
+                    </a>
+                  </div>
+                </div>
+
+                <div class="credit-card" id="perplexity-credits">
+                  <div class="credit-header">
+                    <h4>Perplexity</h4>
+                    <span class="credit-status" id="perplexity-credit-status">Not configured</span>
+                  </div>
+                  <div class="credit-info">
+                    <p>Check your credits and usage in the Perplexity API settings:</p>
+                    <a href="https://www.perplexity.ai/settings/api" target="_blank" class="credit-link">
+                      View API Settings →
+                    </a>
+                    <p class="tip-text">💡 Pro users get $5 free credits monthly. Enable auto top-up to avoid service interruption.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <section class="advanced-section">
+          <details class="advanced-details">
+            <summary>
+              <h3>Advanced Settings</h3>
+            </summary>
+
+            <div class="advanced-content">
+              <div class="subsection">
+                <h4>Cache Management</h4>
+                <p class="help-text">Cached results avoid redundant API calls for identical posts.</p>
+
+                <div class="stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Cached Results:</span>
+                    <span class="stat-value" id="cache-entries">-</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Storage Used:</span>
+                    <span class="stat-value" id="cache-storage">-</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Average Age:</span>
+                    <span class="stat-value" id="cache-age">-</span>
+                  </div>
+                </div>
+
+                <button id="clear-cache-btn" class="btn-secondary">Clear Cache</button>
+                <div id="cache-feedback" class="feedback-message"></div>
+              </div>
+
+              <div class="subsection">
+                <h4>Domain Selectors</h4>
+                <p class="help-text">Manage CSS selectors for post detection on different platforms.</p>
+
+                <div class="stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Configured Domains:</span>
+                    <span class="stat-value" id="selector-domains">-</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Storage Used:</span>
+                    <span class="stat-value" id="selector-storage">-</span>
+                  </div>
+                </div>
+
+                <div id="selector-list" class="selector-list"></div>
+
+                <button id="add-domain-btn" class="btn-secondary">+ Add Domain</button>
+                <div id="selector-feedback" class="feedback-message"></div>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <!-- Sticky Save Button -->
+        <div class="sticky-button-container">
+          <button id="save-settings" class="btn-primary">Save Settings</button>
+          <div id="save-feedback" class="feedback-message"></div>
+        </div>
+      </main>
+
+      <footer>
+        <p id="version-footer"></p>
+      </footer>
+    </div>
+
+    <script type="module" src="popup.ts"></script>
+  </body>
+</html>

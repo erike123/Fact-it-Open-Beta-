@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Fact-It</title>
+    <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" href="onboarding.css" />
+  </head>
+  <body>
+    <div class="container onboarding-container">
+      <!-- Welcome Screen -->
+      <div class="onboarding-screen" id="screen-1">
+        <div class="onboarding-hero">
+          <div class="hero-icon">🛡️</div>
+          <h1>Welcome to Fact-It!</h1>
+          <p class="hero-subtitle">Your personal AI-powered fact-checker</p>
+        </div>
+
+        <div class="onboarding-features">
+          <div class="feature-row">
+            <div class="feature-icon">✓</div>
+            <div class="feature-text">
+              <strong>Real-time Protection</strong>
+              <small>Automatically checks facts as you browse</small>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-text">
+              <strong>AI-Powered</strong>
+              <small>Uses multiple AI providers for accuracy</small>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">🆓</div>
+            <div class="feature-text">
+              <strong>100 Free Checks Daily</strong>
+              <small>No credit card required</small>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary btn-large" id="next-btn-1">
+          Get Started →
+        </button>
+      </div>
+
+      <!-- Email Input Screen -->
+      <div class="onboarding-screen" id="screen-2" style="display: none;">
+        <div class="onboarding-hero">
+          <div class="hero-icon">📧</div>
+          <h2>Optional: Join Your Team</h2>
+          <p class="hero-subtitle">Enter your work email to see company-wide security stats</p>
+        </div>
+
+        <div class="onboarding-form">
+          <div class="form-group">
+            <label for="work-email">Work Email (Optional)</label>
+            <input
+              type="email"
+              id="work-email"
+              placeholder="you@company.com"
+              autocomplete="email"
+              class="email-input"
+            />
+            <small class="help-text">
+              This helps your IT team see how Fact-It protects your organization
+            </small>
+          </div>
+
+          <div class="privacy-note">
+            <div class="privacy-icon">🔒</div>
+            <div class="privacy-text">
+              <strong>Your Privacy is Protected</strong>
+              <small>We only track aggregated company statistics. Your browsing activity remains private.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn-secondary" id="skip-btn">
+            Skip for Now
+          </button>
+          <button class="btn-primary" id="continue-btn">
+            Continue →
+          </button>
+        </div>
+      </div>
+
+      <!-- Company Detection Screen -->
+      <div class="onboarding-screen" id="screen-3" style="display: none;">
+        <div class="onboarding-hero">
+          <div class="hero-icon">🎉</div>
+          <h2>You're Protected!</h2>
+          <p class="hero-subtitle" id="company-message">Your company has <span id="employee-count-text">0</span> employees using Fact-It</p>
+        </div>
+
+        <div class="company-stats">
+          <div class="stat-box">
+            <div class="stat-value" id="company-checks">0</div>
+            <div class="stat-label">Company Checks</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="company-threats">0</div>
+            <div class="stat-label">Threats Blocked</div>
+          </div>
+        </div>
+
+        <div class="company-dashboard-promo">
+          <p><strong>Want to see your company dashboard?</strong></p>
+          <small>View company-wide security metrics and team activity</small>
+          <button class="btn-secondary btn-block" id="view-dashboard-btn">
+            View Company Dashboard
+          </button>
+        </div>
+
+        <button class="btn-primary btn-large" id="finish-btn">
+          Start Using Fact-It →
+        </button>
+      </div>
+
+      <!-- Personal Mode Screen (No Email) -->
+      <div class="onboarding-screen" id="screen-personal" style="display: none;">
+        <div class="onboarding-hero">
+          <div class="hero-icon">✅</div>
+          <h2>All Set!</h2>
+          <p class="hero-subtitle">You're ready to start fact-checking</p>
+        </div>
+
+        <div class="personal-mode-info">
+          <div class="info-card">
+            <div class="info-icon">📊</div>
+            <div class="info-content">
+              <strong>Personal Mode</strong>
+              <small>Track your own security stats privately</small>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">🆓</div>
+            <div class="info-content">
+              <strong>100 Free Checks Daily</strong>
+              <small>Resets at midnight</small>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">💎</div>
+            <div class="info-content">
+              <strong>Upgrade Anytime</strong>
+              <small>Get unlimited checks with Pro</small>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary btn-large" id="finish-personal-btn">
+          Start Using Fact-It →
+        </button>
+
+        <button class="btn-link" id="add-email-later-btn">
+          Add work email later
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="onboarding.ts"></script>
+  </body>
+</html>

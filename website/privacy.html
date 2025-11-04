@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Fact-It</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .policy-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: white;
+    }
+    .policy-header {
+      text-align: center;
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .policy-header h1 {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+    .policy-meta {
+      color: #718096;
+      font-size: 14px;
+    }
+    .policy-section {
+      margin-bottom: 40px;
+    }
+    .policy-section h2 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #1a202c;
+    }
+    .policy-section h3 {
+      font-size: 20px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: #2d3748;
+    }
+    .policy-section p {
+      margin-bottom: 16px;
+      line-height: 1.8;
+      color: #4a5568;
+    }
+    .policy-section ul, .policy-section ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+      line-height: 1.8;
+      color: #4a5568;
+    }
+    .policy-section li {
+      margin-bottom: 8px;
+    }
+    .highlight-box {
+      background: #f7fafc;
+      border-left: 4px solid #667eea;
+      padding: 16px;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+    .no-collect {
+      color: #f56565;
+      font-weight: 600;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 24px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+    th {
+      background: #f7fafc;
+      font-weight: 600;
+      color: #2d3748;
+    }
+    td {
+      color: #4a5568;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="policy-container">
+    <a href="/" class="back-link">← Back to Home</a>
+
+    <div class="policy-header">
+      <h1>Privacy Policy</h1>
+      <div class="policy-meta">
+        <strong>Last Updated:</strong> January 15, 2025<br>
+        <strong>Effective Date:</strong> January 15, 2025
+      </div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="policy-section">
+      <h2>1. Introduction</h2>
+      <p>
+        Fact-It ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our browser extension.
+      </p>
+      <p><strong>By using Fact-It, you agree to the collection and use of information in accordance with this policy.</strong></p>
+    </div>
+
+    <!-- Information We Collect -->
+    <div class="policy-section">
+      <h2>2. Information We Collect</h2>
+
+      <h3>2.1 Information You Provide</h3>
+      <p><strong>License Key / Subscription Information:</strong></p>
+      <ul>
+        <li>License key (when you activate a paid subscription)</li>
+        <li>Email address (only if you subscribe to paid tier)</li>
+        <li>Subscription tier (Free, Pro, Business)</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>We DO NOT collect:</strong></p>
+        <ul>
+          <li class="no-collect">❌ Your name (unless voluntarily provided for support)</li>
+          <li class="no-collect">❌ Payment information (handled by Stripe)</li>
+          <li class="no-collect">❌ Passwords</li>
+          <li class="no-collect">❌ Social media credentials</li>
+        </ul>
+      </div>
+
+      <h3>2.2 Automatically Collected Information</h3>
+      <p><strong>Usage Data:</strong></p>
+      <ul>
+        <li>Number of fact-checks performed per day</li>
+        <li>Timestamp of fact-check requests</li>
+        <li>Platform used (Twitter, LinkedIn, Facebook)</li>
+        <li>Extension version</li>
+        <li>Browser type and version</li>
+      </ul>
+
+      <p><strong>Technical Data:</strong></p>
+      <ul>
+        <li>Browser user agent</li>
+        <li>Operating system</li>
+        <li>Extension errors (for debugging)</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>We DO NOT collect:</strong></p>
+        <ul>
+          <li class="no-collect">❌ Your browsing history</li>
+          <li class="no-collect">❌ Content of your posts (unless you explicitly click "Check Claim")</li>
+          <li class="no-collect">❌ Your personal social media data</li>
+          <li class="no-collect">❌ Your contacts or followers</li>
+          <li class="no-collect">❌ Your location (no GPS or IP-based tracking)</li>
+        </ul>
+      </div>
+
+      <h3>2.3 Text Content Sent for Fact-Checking</h3>
+      <p><strong>When you click "Check Claim":</strong></p>
+      <ul>
+        <li>The text of the post is sent to our backend API</li>
+        <li>Our API forwards it to AI providers (OpenAI, Anthropic, Perplexity, Groq)</li>
+        <li>The text is processed to detect and verify factual claims</li>
+        <li><strong>Text is NOT stored permanently</strong> (only cached for 24 hours to prevent duplicate requests)</li>
+        <li>AI providers may retain data according to their policies (see Section 6)</li>
+      </ul>
+    </div>
+
+    <!-- How We Use Your Information -->
+    <div class="policy-section">
+      <h2>3. How We Use Your Information</h2>
+
+      <h3>3.1 Provide the Service</h3>
+      <ul>
+        <li>Process fact-checking requests</li>
+        <li>Validate your subscription tier</li>
+        <li>Enforce usage limits (100 checks/day for free tier)</li>
+        <li>Deliver results to you</li>
+      </ul>
+
+      <h3>3.2 Improve the Service</h3>
+      <ul>
+        <li>Analyze usage patterns (anonymized)</li>
+        <li>Fix bugs and improve performance</li>
+        <li>Develop new features based on usage data</li>
+      </ul>
+
+      <h3>3.3 Customer Support</h3>
+      <ul>
+        <li>Respond to your support requests</li>
+        <li>Troubleshoot technical issues</li>
+        <li>Send important service updates (e.g., subscription expiration)</li>
+      </ul>
+
+      <h3>3.4 Legal Compliance</h3>
+      <ul>
+        <li>Comply with legal obligations</li>
+        <li>Enforce our Terms of Service</li>
+        <li>Protect against fraud and abuse</li>
+      </ul>
+    </div>
+
+    <!-- How We Share Your Information -->
+    <div class="policy-section">
+      <h2>4. How We Share Your Information</h2>
+
+      <h3>4.1 Third-Party Service Providers</h3>
+      <p><strong>AI Providers (for fact-checking):</strong></p>
+      <ul>
+        <li>OpenAI (GPT-4o) - <a href="https://openai.com/policies/privacy-policy" target="_blank">Privacy Policy</a></li>
+        <li>Anthropic (Claude 3.5) - <a href="https://www.anthropic.com/privacy" target="_blank">Privacy Policy</a></li>
+        <li>Perplexity (Sonar Pro) - <a href="https://www.perplexity.ai/privacy" target="_blank">Privacy Policy</a></li>
+        <li>Groq (Llama 3.1) - <a href="https://groq.com/privacy-policy" target="_blank">Privacy Policy</a></li>
+      </ul>
+
+      <p><strong>Payment Processor:</strong></p>
+      <ul>
+        <li>Stripe (handles all payment processing)</li>
+        <li><strong>We NEVER see your credit card information</strong></li>
+        <li><a href="https://stripe.com/privacy" target="_blank">Stripe Privacy Policy</a></li>
+      </ul>
+
+      <h3>4.2 We DO NOT Sell Your Data</h3>
+      <div class="highlight-box">
+        <p><strong>We will NEVER:</strong></p>
+        <ul>
+          <li class="no-collect">❌ Sell your personal information to third parties</li>
+          <li class="no-collect">❌ Share your data with advertisers</li>
+          <li class="no-collect">❌ Use your data for marketing to third parties</li>
+        </ul>
+      </div>
+
+      <h3>4.3 Legal Requirements</h3>
+      <p>We may disclose your information if required by law:</p>
+      <ul>
+        <li>Court orders or subpoenas</li>
+        <li>Government investigations</li>
+        <li>To protect our legal rights</li>
+        <li>To prevent harm or illegal activity</li>
+      </ul>
+    </div>
+
+    <!-- Data Retention -->
+    <div class="policy-section">
+      <h2>5. Data Retention</h2>
+      <p><strong>How long we keep your data:</strong></p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Data Type</th>
+              <th>Retention Period</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Usage logs</td>
+              <td>90 days</td>
+            </tr>
+            <tr>
+              <td>Subscription data</td>
+              <td>Duration of subscription + 1 year</td>
+            </tr>
+            <tr>
+              <td>Cached fact-checks</td>
+              <td>24 hours</td>
+            </tr>
+            <tr>
+              <td>Support emails</td>
+              <td>2 years after resolution</td>
+            </tr>
+            <tr>
+              <td>License keys</td>
+              <td>Until account deletion</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>After retention period:</strong> Data is permanently deleted from our systems.</p>
+    </div>
+
+    <!-- Third-Party AI Provider Policies -->
+    <div class="policy-section">
+      <h2>6. Third-Party AI Provider Policies</h2>
+      <p>When you use Fact-It, text content is processed by AI providers. Each has their own privacy policy:</p>
+
+      <ul>
+        <li><strong>OpenAI:</strong> Data retention 30 days (API usage), Location: USA</li>
+        <li><strong>Anthropic:</strong> Not stored permanently, Location: USA</li>
+        <li><strong>Perplexity:</strong> Per their policy, Location: USA</li>
+        <li><strong>Groq:</strong> Not stored (inference only), Location: USA</li>
+      </ul>
+
+      <p><strong>By using Fact-It, you acknowledge that your fact-check requests are processed by these third parties.</strong></p>
+    </div>
+
+    <!-- Your Privacy Rights -->
+    <div class="policy-section">
+      <h2>7. Your Privacy Rights</h2>
+
+      <h3>7.1 Access Your Data</h3>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access your personal data</li>
+        <li>Download a copy of your data</li>
+        <li>Review your subscription information</li>
+      </ul>
+      <p><strong>How to request:</strong> Email <a href="mailto:privacy@factit.app">privacy@factit.app</a> with "Data Access Request".</p>
+
+      <h3>7.2 Delete Your Data</h3>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Delete your account and all associated data</li>
+        <li>Request removal from our systems</li>
+      </ul>
+      <p><strong>How to request:</strong> Email <a href="mailto:privacy@factit.app">privacy@factit.app</a> with "Data Deletion Request". We will delete within 30 days.</p>
+
+      <h3>7.3 Correct Your Data</h3>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Correct inaccurate information</li>
+        <li>Update your email address</li>
+      </ul>
+      <p><strong>How to request:</strong> Email <a href="mailto:support@factit.app">support@factit.app</a> with corrections.</p>
+
+      <h3>7.4 Opt-Out of Data Collection</h3>
+      <p>You can:</p>
+      <ul>
+        <li>Uninstall the extension (stops all data collection)</li>
+        <li>Use the free tier without providing email</li>
+        <li>Disable auto-check feature (only manual fact-checks)</li>
+      </ul>
+
+      <h3>7.5 GDPR Rights (EU Users)</h3>
+      <p>If you're in the European Union, you have additional rights under GDPR:</p>
+      <ul>
+        <li>Right to data portability</li>
+        <li>Right to restrict processing</li>
+        <li>Right to object to processing</li>
+        <li>Right to lodge a complaint with supervisory authority</li>
+      </ul>
+      <p><strong>Our GDPR representative:</strong> <a href="mailto:privacy@factit.app">privacy@factit.app</a></p>
+
+      <h3>7.6 CCPA Rights (California Users)</h3>
+      <p>If you're in California, you have rights under CCPA:</p>
+      <ul>
+        <li>Right to know what data we collect</li>
+        <li>Right to delete your data</li>
+        <li>Right to opt-out of data sales (we don't sell data)</li>
+        <li>Right to non-discrimination</li>
+      </ul>
+      <p><strong>California residents:</strong> Email <a href="mailto:privacy@factit.app">privacy@factit.app</a> with "CCPA Request".</p>
+    </div>
+
+    <!-- Data Security -->
+    <div class="policy-section">
+      <h2>8. Data Security</h2>
+      <p><strong>How we protect your information:</strong></p>
+
+      <h3>8.1 Technical Measures</h3>
+      <ul>
+        <li>✅ HTTPS encryption for all API communication</li>
+        <li>✅ License keys encrypted in browser storage</li>
+        <li>✅ Secure backend infrastructure</li>
+        <li>✅ Regular security audits</li>
+        <li>✅ Database encryption</li>
+      </ul>
+
+      <h3>8.2 Access Controls</h3>
+      <ul>
+        <li>Limited employee access to user data</li>
+        <li>Two-factor authentication for our systems</li>
+        <li>Regular security training for team</li>
+      </ul>
+
+      <h3>8.3 Incident Response</h3>
+      <ul>
+        <li>Security breach notification within 72 hours (GDPR requirement)</li>
+        <li>Immediate investigation and remediation</li>
+        <li>Transparent communication with affected users</li>
+      </ul>
+    </div>
+
+    <!-- Children's Privacy -->
+    <div class="policy-section">
+      <h2>9. Children's Privacy</h2>
+      <p>
+        Fact-It is not intended for use by anyone under the age of 13 (or 16 in the EU). We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us at <a href="mailto:privacy@factit.app">privacy@factit.app</a>.
+      </p>
+    </div>
+
+    <!-- International Data Transfers -->
+    <div class="policy-section">
+      <h2>10. International Data Transfers</h2>
+      <p>
+        Your information may be transferred to and processed in countries other than your own. We ensure adequate safeguards are in place for such transfers in compliance with GDPR and other applicable laws.
+      </p>
+    </div>
+
+    <!-- Changes to This Policy -->
+    <div class="policy-section">
+      <h2>11. Changes to This Privacy Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. We will notify you of any changes by:
+      </p>
+      <ul>
+        <li>Posting the new Privacy Policy on this page</li>
+        <li>Updating the "Last Updated" date</li>
+        <li>Sending an email notification (for paid subscribers)</li>
+      </ul>
+      <p><strong>Continued use of Fact-It after changes constitutes acceptance of the updated policy.</strong></p>
+    </div>
+
+    <!-- Contact Us -->
+    <div class="policy-section">
+      <h2>12. Contact Us</h2>
+      <p>If you have questions about this Privacy Policy, please contact us:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:privacy@factit.app">privacy@factit.app</a></li>
+        <li><strong>Support:</strong> <a href="mailto:support@factit.app">support@factit.app</a></li>
+      </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
+      <a href="/" class="back-link">← Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>

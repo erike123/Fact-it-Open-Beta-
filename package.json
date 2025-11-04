@@ -1,0 +1,56 @@
+{
+  "name": "fact-it",
+  "version": "0.1.0",
+  "description": "Real-time fact-checking Chrome extension for social media",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "watch": "nodemon --watch src --ext ts,tsx,html,css,json --exec 'npm run build'",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,css,html}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css,html}\"",
+    "type-check": "tsc --noEmit",
+    "eval:example": "tsx src/evaluation/examples/example-evaluation.ts",
+    "eval:production": "tsx src/evaluation/scripts/evaluate-production-prompts.ts",
+    "eval:compare": "tsx src/evaluation/scripts/compare-prompts.ts",
+    "eval:annotate": "tsx src/evaluation/scripts/quick-annotate.ts",
+    "eval:generate": "tsx src/evaluation/scripts/generate-synthetic-dataset.ts",
+    "eval:import": "tsx src/evaluation/scripts/import-external-dataset.ts",
+    "eval:import-averitec": "tsx src/evaluation/scripts/import-external-dataset.ts averitec",
+    "eval:import-fever": "tsx src/evaluation/scripts/import-external-dataset.ts fever"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.2.0",
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.3.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1"
+  },
+  "keywords": [
+    "chrome-extension",
+    "fact-checking",
+    "ai",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.33",
+    "@ai-sdk/openai": "^2.0.52",
+    "@ai-sdk/perplexity": "^2.0.13",
+    "ai": "^5.0.76",
+    "zod": "^4.1.12"
+  }
+}

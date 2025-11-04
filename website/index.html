@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fact-It - AI-Powered Fact-Checking Extension</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <h1>🎯 Fact-It</h1>
+      </div>
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="#support">Support</a>
+        <a href="activate.html" class="btn-secondary">Activate License</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Stop Misinformation in Real-Time</h1>
+        <p class="hero-subtitle">AI-powered fact-checking for social media posts as you browse</p>
+        <div class="hero-cta">
+          <a href="#" class="btn-primary install-btn" data-store="chrome">
+            <span>Install for Chrome</span>
+          </a>
+          <a href="#" class="btn-primary install-btn" data-store="firefox" style="display: none;">
+            <span>Install for Firefox</span>
+          </a>
+          <a href="#pricing" class="btn-secondary">View Pricing</a>
+        </div>
+        <p class="hero-note">✨ 100% FREE tier available • No credit card required</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Automatic Detection</h3>
+          <p>Automatically detects factual claims in social media posts as you scroll</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>Multi-AI Verification</h3>
+          <p>Cross-verifies facts using OpenAI, Anthropic, and Perplexity for consensus</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Real-Time Results</h3>
+          <p>Get instant verdicts with confidence scores and source citations</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Export Reports</h3>
+          <p>Export fact-check results to PDF or CSV for documentation</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>Multi-Platform</h3>
+          <p>Works on Twitter, LinkedIn, Facebook, and more</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Privacy-Focused</h3>
+          <p>No tracking, no data selling. See our <a href="privacy.html">Privacy Policy</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <div class="pricing-grid">
+
+        <!-- Free Tier -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Free</h3>
+            <div class="price">
+              <span class="currency">$</span>
+              <span class="amount">0</span>
+              <span class="period">/forever</span>
+            </div>
+          </div>
+          <ul class="pricing-features">
+            <li>✓ 100 fact-checks per day</li>
+            <li>✓ Basic claim detection</li>
+            <li>✓ Groq AI-powered analysis</li>
+            <li>✓ Twitter, LinkedIn, Facebook support</li>
+            <li>✗ Multi-AI verification</li>
+            <li>✗ Export reports</li>
+            <li>✗ Priority support</li>
+          </ul>
+          <a href="#" class="btn-pricing install-btn" data-store="chrome">Get Started Free</a>
+        </div>
+
+        <!-- Pro Tier (HIGHLIGHTED) -->
+        <div class="pricing-card featured">
+          <div class="badge">Most Popular</div>
+          <div class="pricing-header">
+            <h3>Pro</h3>
+            <div class="price">
+              <span class="currency">$</span>
+              <span class="amount">9.99</span>
+              <span class="period">/month</span>
+            </div>
+          </div>
+          <ul class="pricing-features">
+            <li>✓ <strong>Unlimited fact-checks</strong></li>
+            <li>✓ Multi-AI cross-verification</li>
+            <li>✓ OpenAI + Anthropic + Perplexity</li>
+            <li>✓ Export to PDF/CSV</li>
+            <li>✓ Browser sync</li>
+            <li>✓ Priority processing</li>
+            <li>✓ Email support</li>
+          </ul>
+          <button class="btn-pricing primary" onclick="handleCheckout('pro')">
+            Subscribe to Pro
+          </button>
+          <p class="pricing-note">30-day money-back guarantee</p>
+        </div>
+
+        <!-- Business Tier -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Business</h3>
+            <div class="price">
+              <span class="currency">$</span>
+              <span class="amount">49</span>
+              <span class="period">/month</span>
+            </div>
+          </div>
+          <ul class="pricing-features">
+            <li>✓ Everything in Pro</li>
+            <li>✓ Team accounts (up to 5 users)</li>
+            <li>✓ API access</li>
+            <li>✓ Dashboard analytics</li>
+            <li>✓ Webhook integrations</li>
+            <li>✓ Priority support</li>
+            <li>✓ Custom domains monitoring</li>
+          </ul>
+          <button class="btn-pricing" onclick="handleCheckout('business')">
+            Subscribe to Business
+          </button>
+        </div>
+
+      </div>
+
+      <div class="pricing-faq">
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-item">
+          <h4>Can I cancel anytime?</h4>
+          <p>Yes! Cancel anytime. Your subscription continues until the end of your billing period.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Do you offer refunds?</h4>
+          <p>New subscribers get a 30-day money-back guarantee. No questions asked!</p>
+        </div>
+        <div class="faq-item">
+          <h4>How do I activate my subscription?</h4>
+          <p>After purchase, you'll receive a license key via email. Enter it in the extension popup to activate.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Do you store my credit card?</h4>
+          <p>No! All payments are securely processed by Stripe. We never see your card details.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support Section -->
+  <section id="support" class="support">
+    <div class="container">
+      <h2 class="section-title">Need Help?</h2>
+      <div class="support-grid">
+        <div class="support-card">
+          <h3>📧 Email Support</h3>
+          <p>support@factit.app</p>
+          <p class="note">Response within 24 hours</p>
+        </div>
+        <div class="support-card">
+          <h3>📚 Documentation</h3>
+          <p><a href="#">Getting Started Guide</a></p>
+          <p><a href="#">Troubleshooting</a></p>
+        </div>
+        <div class="support-card">
+          <h3>🔑 Activate License</h3>
+          <p><a href="activate.html">Enter your license key</a></p>
+          <p class="note">Already purchased? Activate here</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Fact-It</h4>
+          <p>AI-powered fact-checking for everyone</p>
+        </div>
+        <div class="footer-section">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="activate.html">Activate License</a>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="#">Refund Policy</a>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <a href="#support">Contact Us</a>
+          <a href="#">Documentation</a>
+          <a href="#">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Fact-It. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
