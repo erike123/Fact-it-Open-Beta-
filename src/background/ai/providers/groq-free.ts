@@ -159,9 +159,17 @@ Verdict guidelines:
 - "false": The claim is factually incorrect
 - "unknown": Insufficient knowledge or the claim requires current web data to verify
 
-IMPORTANT: If the claim involves recent events, current statistics, or time-sensitive information, return "unknown" with explanation that web search is needed.
+Confidence guidelines:
+- 90-100: Extremely confident, well-documented facts (e.g., "Earth orbits the Sun")
+- 70-89: Very confident, established knowledge (e.g., "Paris is the capital of France")
+- 50-69: Moderately confident, but some uncertainty
+- 30-49: Low confidence, limited knowledge
+- 0-29: Very low confidence, mostly uncertain
 
-Only return the JSON, nothing else.`;
+IMPORTANT:
+- Use high confidence (70-100) for well-established, verifiable facts
+- If the claim involves recent events or current statistics, return "unknown" with explanation that web search is needed
+- Only return the JSON, nothing else.`;
 
     try {
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -186,8 +194,8 @@ Only return the JSON, nothing else.`;
 
       return {
         verdict: analysis.verdict || 'unknown',
-        confidence: Math.max(0, (analysis.confidence || 50) - 15), // Reduce confidence since no web search
-        explanation: analysis.explanation + ' (Note: This verdict is based on AI knowledge without real-time web search. For better accuracy, consider adding a Google API key in settings.)',
+        confidence: Math.max(0, (analysis.confidence || 50) - 5), // Slight reduction since no web search
+        explanation: analysis.explanation + ' (Note: This verdict is based on AI knowledge. For current events, web search may be needed.)',
         sources: [],
       };
     } catch (error) {

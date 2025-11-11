@@ -3,7 +3,7 @@
   "name": "Fact-It",
   "version": "0.1.0",
   "description": "Real-time fact-checking for social media and web articles",
-  "homepage_url": "https://factit.app",
+  "homepage_url": "https://www.security-program.com/",
   "icons": {
     "16": "public/icons/icon16.png",
     "48": "public/icons/icon48.png",
@@ -18,7 +18,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "fact-it@example.com",
+      "id": "fact-it@email33.abv.bg",
       "strict_min_version": "121.0"
     }
   },

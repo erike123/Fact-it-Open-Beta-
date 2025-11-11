@@ -19,6 +19,7 @@ export enum MessageType {
   CLEAR_CACHE = 'CLEAR_CACHE',
   GET_TRIAL_INFO = 'GET_TRIAL_INFO',
   GET_DAILY_LIMIT = 'GET_DAILY_LIMIT',
+  GET_HISTORICAL_STATS = 'GET_HISTORICAL_STATS',
   // Company tracking
   SET_USER_EMAIL = 'SET_USER_EMAIL',
   GET_COMPANY_STATS = 'GET_COMPANY_STATS',
@@ -60,7 +61,17 @@ export interface ClaimResultMessage {
     consensus?: {
       total: number;
       agreeing: number;
+      percentageAgreement: number; // 0-100
     };
+    disagreement?: {
+      hasDisagreement: boolean;
+      conflictingVerdicts: Array<{
+        verdict: 'true' | 'false' | 'unknown';
+        providers: string[];
+        confidence: number;
+      }>;
+    };
+    sourceDiversity?: SourceDiversity;
   };
 }
 
@@ -175,6 +186,7 @@ export type Message =
   | ClearCacheMessage
   | GetTrialInfoMessage
   | GetDailyLimitMessage
+  | GetHistoricalStatsMessage
   | SetUserEmailMessage
   | GetCompanyStatsMessage
   | GetCompanyDashboardDataMessage
@@ -288,6 +300,62 @@ export interface TrackThreatBlockedMessage {
   };
 }
 
+// Historical tracking interfaces
+export interface HistoricalCheck {
+  timestamp: number;
+  text: string; // First 100 chars
+  verdict: Verdict;
+  confidence: number;
+  platform: Platform;
+  category?: string; // e.g., "Politics", "Health", "Science"
+  disagreement?: boolean; // True if AIs disagreed
+}
+
+export interface HistoricalStats {
+  totalChecks: number;
+  checksThisWeek: number;
+  verdictCounts: {
+    true: number;
+    false: number;
+    unknown: number;
+    no_claim: number;
+  };
+  topCategories: Array<{ category: string; count: number }>;
+  disagreementRate: number; // Percentage of checks where AIs disagreed
+  averageConfidence: number;
+  recentChecks: HistoricalCheck[]; // Last 50 checks
+}
+
+// Source diversity interfaces
+export type SourceCategory =
+  | 'news_outlet'
+  | 'academic'
+  | 'government'
+  | 'fact_checker'
+  | 'social_media'
+  | 'encyclopedia'
+  | 'other';
+
+export interface CategorizedSource {
+  title: string;
+  url: string;
+  provider: string;
+  category: SourceCategory;
+  domain: string;
+}
+
+export interface SourceDiversity {
+  categories: Record<SourceCategory, number>;
+  uniqueDomains: number;
+  totalSources: number;
+  categorizedSources: CategorizedSource[];
+}
+
+// Message types for historical tracking
+export interface GetHistoricalStatsMessage {
+  type: MessageType.GET_HISTORICAL_STATS;
+}
+
 // Storage keys
 export const STORAGE_KEYS = {
   SETTINGS: 'fact_it_settings',
@@ -297,4 +365,6 @@ export const STORAGE_KEYS = {
   USER_PROFILE: 'fact_it_user_profile',
   COMPANY_STATS: 'fact_it_company_stats', // Map of domain -> CompanyStats
   COMPANY_EMPLOYEES: 'fact_it_company_employees', // Map of domain -> UserProfile[]
+  HISTORICAL_STATS: 'fact_it_historical_stats',
+  HISTORICAL_CHECKS: 'fact_it_historical_checks',
 } as const;

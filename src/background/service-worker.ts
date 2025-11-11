@@ -34,6 +34,8 @@ import {
   isDailyLimitReached,
   getResetTimeFormatted,
 } from '@/background/limits/daily-limit-manager';
+import { getHistoricalStats } from '@/background/tracking/historical-tracker';
+import { getGlobalRateLimitStatus } from '@/background/rate-limiting/global-rate-limiter';
 
 console.info(`${EXTENSION_NAME}: Service worker loaded`);
 
@@ -151,6 +153,10 @@ chrome.runtime.onMessage.addListener(
         handleGetDailyLimit(sendResponse);
         return true; // Keep channel open for async response
 
+      case MessageType.GET_HISTORICAL_STATS:
+        handleGetHistoricalStats(sendResponse);
+        return true; // Keep channel open for async response
+
       case MessageType.SET_USER_EMAIL:
         handleSetUserEmail(message, sendResponse);
         return true; // Keep channel open for async response
@@ -205,7 +211,7 @@ async function handleCheckClaim(
     console.info(`${EXTENSION_NAME}: Starting fact-check using orchestrator`);
 
     // Run fact-check through orchestrator (handles multiple providers, caching, etc.)
-    const result = await orchestrator.checkClaim(text);
+    const result = await orchestrator.checkClaim(text, platform);
 
     // Record usage (increment daily counter) - only if we got a result
     if (result.verdict !== 'unknown' || result.confidence > 0) {
@@ -233,6 +239,8 @@ async function handleCheckClaim(
           explanation: pr.explanation,
         })) || [],
         consensus: result.consensus,
+        disagreement: result.disagreement,
+        sourceDiversity: result.sourceDiversity,
       },
     });
   } catch (error) {
@@ -445,6 +453,20 @@ async function handleGetDailyLimit(sendResponse: (response: unknown) => void): P
     sendResponse(limitInfo);
   } catch (error) {
     console.error(`${EXTENSION_NAME}: Error getting daily limit:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle get historical stats request
+ */
+async function handleGetHistoricalStats(sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const stats = await getHistoricalStats();
+    const globalStatus = await getGlobalRateLimitStatus('groq');
+    sendResponse({ stats, globalStatus });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error getting historical stats:`, error);
     sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
   }
 }

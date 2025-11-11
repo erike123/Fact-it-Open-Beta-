@@ -8,6 +8,13 @@ import { STORAGE_KEYS } from '@/shared/types';
 import { providerRegistry, ProviderId } from './providers/registry';
 import { AggregatedResult, ProviderResult } from './providers/types';
 import { getCachedResult, setCachedResult } from '@/background/cache/fact-check-cache';
+import { analyzeSourceDiversity } from './source-diversity';
+import { trackHistoricalCheck } from '@/background/tracking/historical-tracker';
+import {
+  canMakeGlobalRequest,
+  incrementGlobalRequestCount,
+  getGlobalLimitErrorMessage,
+} from '@/background/rate-limiting/global-rate-limiter';
 
 export class FactCheckOrchestrator {
   /**
@@ -67,6 +74,7 @@ export class FactCheckOrchestrator {
         consensus: {
           total: providerResults.length,
           agreeing: 0,
+          percentageAgreement: 0,
         },
       };
     }
@@ -89,12 +97,19 @@ export class FactCheckOrchestrator {
 
     // Count consensus (providers that agree with final verdict)
     const agreeing = verdictResults.length;
+    const percentageAgreement = Math.round((agreeing / successfulResults.length) * 100);
+
+    // Detect disagreements
+    const disagreementInfo = this.detectDisagreement(successfulResults);
 
     // Combine explanations
-    const explanation = this.combineExplanations(verdictResults);
+    const explanation = this.combineExplanations(verdictResults, disagreementInfo);
 
     // Deduplicate and aggregate sources
     const sources = this.aggregateSources(successfulResults);
+
+    // Analyze source diversity
+    const sourceDiversity = analyzeSourceDiversity(sources);
 
     return {
       verdict: finalVerdict,
@@ -105,25 +120,109 @@ export class FactCheckOrchestrator {
       consensus: {
         total: successfulResults.length,
         agreeing,
+        percentageAgreement,
       },
+      disagreement: disagreementInfo,
+      sourceDiversity,
+    };
+  }
+
+  /**
+   * Detect if providers disagree on verdict
+   * @param results - Array of successful provider results
+   * @returns Disagreement information
+   */
+  private detectDisagreement(results: ProviderResult[]): {
+    hasDisagreement: boolean;
+    conflictingVerdicts: Array<{
+      verdict: 'true' | 'false' | 'unknown';
+      providers: string[];
+      confidence: number;
+    }>;
+  } {
+    // Group providers by their verdict
+    const verdictGroups = new Map<
+      'true' | 'false' | 'unknown',
+      { providers: string[]; totalConfidence: number; count: number }
+    >();
+
+    for (const result of results) {
+      if (!verdictGroups.has(result.verdict)) {
+        verdictGroups.set(result.verdict, { providers: [], totalConfidence: 0, count: 0 });
+      }
+      const group = verdictGroups.get(result.verdict)!;
+      group.providers.push(result.providerName);
+      group.totalConfidence += result.confidence;
+      group.count++;
+    }
+
+    // Check if there's disagreement (more than one verdict)
+    const hasDisagreement = verdictGroups.size > 1;
+
+    // Create conflicting verdicts array
+    const conflictingVerdicts = Array.from(verdictGroups.entries()).map(
+      ([verdict, group]) => ({
+        verdict,
+        providers: group.providers,
+        confidence: Math.round(group.totalConfidence / group.count),
+      })
+    );
+
+    // Sort by number of providers (descending)
+    conflictingVerdicts.sort((a, b) => b.providers.length - a.providers.length);
+
+    return {
+      hasDisagreement,
+      conflictingVerdicts,
     };
   }
 
   /**
    * Combine explanations from multiple providers
    * @param results - Array of provider results with same verdict
+   * @param disagreementInfo - Information about disagreements
    * @returns Combined explanation
    */
-  private combineExplanations(results: ProviderResult[]): string {
+  private combineExplanations(
+    results: ProviderResult[],
+    disagreementInfo?: {
+      hasDisagreement: boolean;
+      conflictingVerdicts: Array<{
+        verdict: 'true' | 'false' | 'unknown';
+        providers: string[];
+        confidence: number;
+      }>;
+    }
+  ): string {
     if (results.length === 1) {
+      // Single provider
+      if (disagreementInfo?.hasDisagreement) {
+        return `${results[0].explanation} ⚠️ Note: Other AI providers have conflicting assessments.`;
+      }
       return results[0].explanation;
     }
 
-    // For multiple providers, create a summary that mentions consensus
+    // Multiple providers agreeing
     const firstExplanation = results[0].explanation;
     const providerNames = results.map((r) => r.providerName).join(', ');
 
-    return `Multiple sources agree: ${firstExplanation} (Confirmed by: ${providerNames})`;
+    let explanation = `${firstExplanation}`;
+
+    // Add consensus note
+    if (results.length >= 2) {
+      explanation += ` ✓ Consensus: ${results.length} AI${results.length > 1 ? 's' : ''} agree (${providerNames}).`;
+    }
+
+    // Add disagreement warning if applicable
+    if (disagreementInfo?.hasDisagreement && disagreementInfo.conflictingVerdicts.length > 1) {
+      const otherVerdicts = disagreementInfo.conflictingVerdicts
+        .slice(1)
+        .map((v) => `${v.providers.join(', ')}: ${v.verdict.toUpperCase()}`)
+        .join('; ');
+      explanation += ` ⚠️ Disagreement detected: ${otherVerdicts}. Multiple perspectives exist.`;
+    }
+
+    return explanation;
   }
 
   /**
@@ -164,9 +263,10 @@ export class FactCheckOrchestrator {
   /**
    * Check a claim across multiple AI providers in parallel
    * @param text - Text to fact-check
+   * @param platform - Platform where the check was performed (for tracking)
    * @returns Aggregated result from all enabled providers
    */
-  async checkClaim(text: string): Promise<AggregatedResult> {
+  async checkClaim(text: string, platform: 'twitter' | 'linkedin' | 'facebook' | 'article' = 'article'): Promise<AggregatedResult> {
     // Check cache first
     const cachedResult = await getCachedResult(text);
     if (cachedResult) {
@@ -189,8 +289,50 @@ export class FactCheckOrchestrator {
         consensus: {
           total: 0,
           agreeing: 0,
+          percentageAgreement: 0,
         },
       };
+    }
+
+    // Check global rate limit (for embedded API keys only)
+    // Only check for providers using embedded keys (groq-free in this case)
+    let usingEmbeddedKey = false;
+    for (const providerId of enabledProviders) {
+      if (providerId === 'groq') {
+        const apiKey = await this.getApiKey(providerId);
+        if (apiKey?.startsWith('gsk_')) {
+          usingEmbeddedKey = true;
+          break;
+        }
+      }
+    }
+
+    if (usingEmbeddedKey) {
+      const globalLimit = await canMakeGlobalRequest('groq');
+      if (!globalLimit.allowed) {
+        console.warn(
+          `${EXTENSION_NAME}: Global rate limit reached (${globalLimit.remaining}/${globalLimit.total})`
+        );
+        return {
+          verdict: 'unknown',
+          confidence: 0,
+          explanation: getGlobalLimitErrorMessage(globalLimit.resetTime),
+          sources: [],
+          providerResults: [],
+          consensus: {
+            total: 0,
+            agreeing: 0,
+            percentageAgreement: 0,
+          },
+        };
+      }
+
+      // Warn user if approaching limit (>80%)
+      if (globalLimit.warningThreshold) {
+        console.warn(
+          `${EXTENSION_NAME}: Global rate limit warning - ${globalLimit.remaining} requests remaining today`
+        );
+      }
     }
 
     console.info(
@@ -223,6 +365,7 @@ export class FactCheckOrchestrator {
 
     if (providersWithClaims.length === 0) {
       console.info(`${EXTENSION_NAME}: No claims detected by any provider`);
+      const fulfilledCount = detectionResults.filter((r) => r.status === 'fulfilled').length;
       return {
         verdict: 'no_claim',
         confidence: 100,
@@ -230,8 +373,9 @@ export class FactCheckOrchestrator {
         sources: [],
         providerResults: [],
         consensus: {
-          total: detectionResults.filter((r) => r.status === 'fulfilled').length,
-          agreeing: detectionResults.filter((r) => r.status === 'fulfilled').length,
+          total: fulfilledCount,
+          agreeing: fulfilledCount,
+          percentageAgreement: 100,
         },
       };
     }
@@ -292,6 +436,24 @@ export class FactCheckOrchestrator {
     console.info(
       `${EXTENSION_NAME}: Final verdict: ${aggregatedResult.verdict} (confidence: ${aggregatedResult.confidence}%, consensus: ${aggregatedResult.consensus.agreeing}/${aggregatedResult.consensus.total})`
     );
+
+    // Track historical data (don't await to avoid slowing down response)
+    if (aggregatedResult.verdict !== 'no_claim') {
+      trackHistoricalCheck(
+        text,
+        aggregatedResult.verdict,
+        aggregatedResult.confidence,
+        platform,
+        aggregatedResult.disagreement?.hasDisagreement || false
+      ).catch((err) => console.error('Error tracking historical check:', err));
+    }
+
+    // Increment global rate limit counter for embedded keys
+    if (usingEmbeddedKey) {
+      incrementGlobalRequestCount('groq').catch((err) =>
+        console.error('Error incrementing global request count:', err)
+      );
+    }
 
     // Cache the result for future lookups
     await setCachedResult(text, aggregatedResult);

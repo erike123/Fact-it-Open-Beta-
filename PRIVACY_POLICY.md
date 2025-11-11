@@ -1,7 +1,7 @@
 # Privacy Policy for Fact-It
 
-**Last Updated:** October 20, 2025
-**Effective Date:** October 20, 2025
+**Last Updated:** November 10, 2024
+**Effective Date:** November 10, 2024
 
 ## Introduction
 
@@ -182,6 +182,27 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 
 ---
 
+## Service Changes and API Provider Updates
+
+**Free Tier Service:**
+Our free tier currently uses Groq's free API service. We reserve the right to:
+- Change AI providers if necessary (e.g., to OpenAI, Anthropic, or others)
+- Modify free tier limits based on service availability and costs
+- Require users to provide their own API keys if free tier becomes unsustainable
+
+**Notification of Changes:**
+If we make significant changes to the free tier:
+- You will be notified via the extension popup at least 30 days in advance
+- You will have the option to add your own API key (free options will be provided)
+- Your data and settings will remain unaffected
+
+**Your Rights:**
+- You may uninstall the extension at any time if you disagree with changes
+- We will always provide a free alternative option (e.g., instructions to get your own free API key)
+- No payment will ever be required without explicit user consent
+
+---
+
 ## International Data Transfers
 
 If you are using Fact-It outside the United States:
@@ -252,7 +273,7 @@ Fact-check results may include links to external sources. We are not responsible
 ## Open Source
 
 Fact-It's core technology is open source. You can review our code at:
-**https://github.com/yourorg/fact-it** (update with your actual repo)
+**https://github.com/erike123/Fact-it-Open-Beta-**
 
 This transparency allows security researchers and users to verify our privacy claims.
 
@@ -262,12 +283,12 @@ This transparency allows security researchers and users to verify our privacy cl
 
 If you have questions about this Privacy Policy or our data practices:
 
-**Email:** privacy@fact-it.app
-**Support:** support@fact-it.app
-**Website:** https://fact-it.app
-**GitHub Issues:** https://github.com/yourorg/fact-it/issues
+**Email:** email33@abv.bg
+**Support:** email33@abv.bg
+**Website:** https://www.security-program.com/
+**GitHub Issues:** https://github.com/erike123/Fact-it-Open-Beta-/issues
 
-**Mailing Address:** (Add your address when you have one)
+**Mailing Address:** Available upon request via email
 
 ---
 

@@ -228,21 +228,21 @@ function setupEventListeners(): void {
   // Enterprise upgrade
   enterpriseUpgradeBtn.addEventListener('click', () => {
     chrome.tabs.create({
-      url: 'https://factit.app/enterprise', // TODO: Replace with actual URL
+      url: 'https://www.security-program.com/enterprise',
     });
   });
 
   // MSSP contact
   msspContactBtn.addEventListener('click', () => {
     chrome.tabs.create({
-      url: 'https://factit.app/mssp', // TODO: Replace with actual URL
+      url: 'https://www.security-program.com/mssp',
     });
   });
 
   // Grant help
   grantHelpBtn.addEventListener('click', () => {
     chrome.tabs.create({
-      url: 'https://factit.app/grants', // TODO: Replace with actual URL
+      url: 'https://www.security-program.com/grants',
     });
   });
 

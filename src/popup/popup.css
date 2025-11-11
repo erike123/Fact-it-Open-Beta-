@@ -122,19 +122,26 @@ main {
   overflow: hidden;
 }
 
+/* Coming Soon variant of pro banner */
+.pro-upgrade-banner.coming-soon {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
 .coming-soon-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #667eea;
-  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.badge-text {
+  font-size: 14px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 1px;
 }
 
 .pro-content {
@@ -204,7 +211,7 @@ main {
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
-  cursor: not-allowed;
+  cursor: pointer;
   transition: all 0.2s;
   backdrop-filter: blur(10px);
 }
@@ -212,6 +219,18 @@ main {
 .btn-pro:hover {
   background: rgba(255, 255, 255, 0.25);
   border-color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-pro.disabled,
+.btn-pro:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-pro.disabled:hover,
+.btn-pro:disabled:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Trial Banner (legacy - keeping for compatibility) */
@@ -596,6 +615,13 @@ footer {
   border: 1px solid #e0e0e0;
 }
 
+/* Disabled provider styling */
+.provider-section.provider-disabled {
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  opacity: 0.7;
+}
+
 .provider-header {
   display: flex;
   justify-content: space-between;
@@ -617,10 +643,30 @@ footer {
   cursor: pointer;
 }
 
+.provider-checkbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .provider-name {
   font-size: 15px;
   font-weight: 600;
   color: #333;
+}
+
+/* Coming Soon Tag for providers */
+.coming-soon-tag {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
 }
 
 .provider-config {

@@ -348,7 +348,7 @@ export class FactCheckPopup {
         </div>
 
         <div class="footer">
-          Powered by <a href="https://github.com/yourusername/fact-it" target="_blank">Fact-It</a> • AI-generated verification
+          Powered by <a href="https://github.com/erike123/Fact-it-Open-Beta-" target="_blank">Fact-It</a> • AI-generated verification
         </div>
       </div>
     `;

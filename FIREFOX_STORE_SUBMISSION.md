@@ -116,8 +116,8 @@ Uses Groq's free Llama 3.1 AI model for:
 
 ## 🆘 Support
 
-- Email: support@factit.app
-- Website: https://factit.app
+- Email: email33@abv.bg
+- Website: https://www.security-program.com/
 - Issues: Report via email
 
 ## 🔮 Coming Soon (Pro Features)
@@ -153,19 +153,19 @@ fact-checking, ai, twitter, linkedin, facebook, misinformation, news, verificati
 
 **Support Email:**
 ```
-support@factit.app
+email33@abv.bg
 ```
 
 **Support Website:**
 ```
-https://factit.app
+https://www.security-program.com/
 ```
 
 **Privacy Policy URL:**
 ```
-https://factit.app/privacy
+https://www.security-program.com/privacy
 ```
-(Or upload the PRIVACY_POLICY.md content to a website)
+(Or use the GitHub link: https://github.com/erike123/Fact-it-Open-Beta-/blob/main/PRIVACY_POLICY.md)
 
 ---
 
@@ -210,7 +210,7 @@ Tech:
 
 **Option 1: Link to External Website**
 - Upload PRIVACY_POLICY.md to your website
-- Use URL: `https://factit.app/privacy`
+- Use URL: `https://www.security-program.com/privacy`
 
 **Option 2: Upload as Plain Text**
 - Copy content from `PRIVACY_POLICY.md`
@@ -352,7 +352,7 @@ Before clicking "Submit":
 
 **Monitor:**
 - User reviews on Firefox Add-ons page
-- Support emails to support@factit.app
+- Support emails to email33@abv.bg
 - Groq API usage at https://console.groq.com/
 
 **Respond to:**

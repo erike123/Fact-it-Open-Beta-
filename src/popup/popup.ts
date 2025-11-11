@@ -348,7 +348,7 @@ function setupEventListeners(): void {
     upgradeBtn.addEventListener('click', () => {
       // Open external website for payment (COMPLIANT with store policies)
       chrome.tabs.create({
-        url: 'https://factit.app/pricing' // TODO: Replace with your actual website
+        url: 'https://www.security-program.com/pricing'
       });
     });
   }
@@ -365,7 +365,7 @@ function setupEventListeners(): void {
     getLicenseLink.addEventListener('click', (e) => {
       e.preventDefault();
       chrome.tabs.create({
-        url: 'https://factit.app/pricing' // TODO: Replace with your actual website
+        url: 'https://www.security-program.com/pricing'
       });
     });
   }
@@ -375,7 +375,7 @@ function setupEventListeners(): void {
   if (manageSubscriptionBtn) {
     manageSubscriptionBtn.addEventListener('click', () => {
       chrome.tabs.create({
-        url: 'https://factit.app/account' // TODO: Replace with your actual account page
+        url: 'https://www.security-program.com/account'
       });
     });
   }

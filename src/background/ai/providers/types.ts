@@ -104,6 +104,9 @@ export interface ProviderResult {
   error?: string; // If provider failed
 }
 
+// Import types from shared
+import type { SourceDiversity, SourceCategory } from '@/shared/types';
+
 /**
  * Aggregated result from multiple providers
  */
@@ -116,5 +119,15 @@ export interface AggregatedResult {
   consensus: {
     total: number; // Total providers that completed
     agreeing: number; // Providers that agree with final verdict
+    percentageAgreement: number; // 0-100
   };
+  disagreement?: {
+    hasDisagreement: boolean;
+    conflictingVerdicts: Array<{
+      verdict: 'true' | 'false' | 'unknown';
+      providers: string[];
+      confidence: number;
+    }>;
+  };
+  sourceDiversity?: SourceDiversity;
 }
