@@ -489,8 +489,6 @@ function sendToBackground(
       text,
       elementId,
       platform: 'twitter', // TODO: Dynamic platform detection based on domain
-      iocs, // Include IOCs for threat intelligence
-      severity, // Include threat severity
     },
   };
 

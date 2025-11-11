@@ -31,11 +31,20 @@ import { orchestrator } from '@/background/ai/orchestrator';
 import {
   getDailyLimitInfo,
   recordDailyUsage,
-  isDailyLimitReached,
-  getResetTimeFormatted,
 } from '@/background/limits/daily-limit-manager';
 import { getHistoricalStats } from '@/background/tracking/historical-tracker';
 import { getGlobalRateLimitStatus } from '@/background/rate-limiting/global-rate-limiter';
+import {
+  analyzeURL,
+  checkEmailBreach,
+  generateThreatReport,
+  detectDeepfake,
+  monitorBrand,
+  detectDomainSquatting,
+  enhanceFactCheckWithCampaigns,
+} from '@/background/threat-intelligence';
+import { vulnHunter } from '@/background/vulnerability-hunter/orchestrator';
+import { detectPhishingAndScams } from '@/background/phishing-detector';
 
 console.info(`${EXTENSION_NAME}: Service worker loaded`);
 
@@ -173,6 +182,48 @@ chrome.runtime.onMessage.addListener(
         handleTrackThreatBlocked(message, sendResponse);
         return true; // Keep channel open for async response
 
+      // Threat Intelligence
+      case MessageType.CHECK_URL:
+        handleCheckURL(message, sendResponse);
+        return true;
+
+      case MessageType.CHECK_EMAIL_BREACH:
+        handleCheckEmailBreach(message, sendResponse);
+        return true;
+
+      case MessageType.CHECK_DOMAIN_SQUATTING:
+        handleCheckDomainSquatting(message, sendResponse);
+        return true;
+
+      case MessageType.GENERATE_THREAT_REPORT:
+        handleGenerateThreatReport(message, sendResponse);
+        return true;
+
+      case MessageType.CHECK_DEEPFAKE:
+        handleCheckDeepfake(message, sendResponse);
+        return true;
+
+      case MessageType.MONITOR_BRAND:
+        handleMonitorBrand(message, sendResponse);
+        return true;
+
+      // Vulnerability Hunter
+      case MessageType.VULN_HUNTER_START:
+        handleVulnHunterStart(message, sendResponse);
+        return true;
+
+      case MessageType.VULN_HUNTER_GET_DISCOVERIES:
+        handleVulnHunterGetDiscoveries(sendResponse);
+        return true;
+
+      case MessageType.VULN_HUNTER_ANALYZE:
+        handleVulnHunterAnalyze(message, sendResponse);
+        return true;
+
+      case MessageType.VULN_HUNTER_CLEAR:
+        handleVulnHunterClear(sendResponse);
+        return true;
+
       default:
         console.warn(`${EXTENSION_NAME}: Unknown message type:`, (message as Message).type);
         sendResponse({ error: 'Unknown message type' });
@@ -213,23 +264,68 @@ async function handleCheckClaim(
     // Run fact-check through orchestrator (handles multiple providers, caching, etc.)
     const result = await orchestrator.checkClaim(text, platform);
 
+    // ENHANCED: Check for misinformation campaigns
+    const enhancedResult = await enhanceFactCheckWithCampaigns(text, {
+      verdict: result.verdict as 'true' | 'false' | 'unknown' | 'no_claim',
+      confidence: result.confidence,
+      explanation: result.explanation,
+    });
+
+    // NEW: Check for phishing and scams
+    console.info(`${EXTENSION_NAME}: Checking for phishing/scams...`);
+    const phishingResult = await detectPhishingAndScams(text);
+
     // Record usage (increment daily counter) - only if we got a result
     if (result.verdict !== 'unknown' || result.confidence > 0) {
       await recordDailyUsage();
     }
 
     console.info(
-      `${EXTENSION_NAME}: Fact-check complete - Verdict: ${result.verdict} (${result.confidence}% confidence, consensus: ${result.consensus.agreeing}/${result.consensus.total})`
+      `${EXTENSION_NAME}: Fact-check complete - Verdict: ${enhancedResult.verdict} (${enhancedResult.confidence}% confidence, consensus: ${result.consensus.agreeing}/${result.consensus.total})`
     );
+
+    // If misinformation flags detected, log warning
+    if (enhancedResult.misinformationFlags) {
+      console.warn(
+        `${EXTENSION_NAME}: MISINFORMATION DETECTED - ${enhancedResult.misinformationFlags.matchedCampaigns} campaigns, ${enhancedResult.misinformationFlags.unreliableSources.length} unreliable sources`
+      );
+    }
+
+    // If phishing/scams detected, log critical warning
+    if (phishingResult.isPhishing || phishingResult.isSuspicious) {
+      console.error(
+        `${EXTENSION_NAME}: 🚨 PHISHING/SCAM DETECTED - Severity: ${phishingResult.overallSeverity}, Malicious URLs: ${phishingResult.urlAnalysis.maliciousUrls.length}, Suspicious URLs: ${phishingResult.urlAnalysis.suspiciousUrls.length}`
+      );
+    }
+
+    // Enhance explanation with phishing warnings
+    let finalExplanation = enhancedResult.explanation;
+    if (phishingResult.warnings.length > 0) {
+      finalExplanation = phishingResult.warnings.join('\n') + '\n\n' + finalExplanation;
+    }
+
+    if (phishingResult.recommendations.length > 0) {
+      finalExplanation += '\n\n⚠️ SAFETY RECOMMENDATIONS:\n' + phishingResult.recommendations.join('\n');
+    }
+
+    // Override verdict if critical phishing detected
+    let finalVerdict = enhancedResult.verdict;
+    let finalConfidence = enhancedResult.confidence;
+
+    if (phishingResult.overallSeverity === 'critical') {
+      finalVerdict = 'false';
+      finalConfidence = 99;
+      finalExplanation = '🚨 DANGER: PHISHING/SCAM DETECTED 🚨\n\n' + finalExplanation;
+    }
 
     // Map aggregated result to ClaimResultMessage
     sendResponse({
       type: MessageType.CLAIM_RESULT,
       payload: {
         elementId,
-        verdict: result.verdict as Verdict,
-        confidence: result.confidence,
-        explanation: result.explanation,
+        verdict: finalVerdict as Verdict,
+        confidence: finalConfidence,
+        explanation: finalExplanation,
         sources: result.sources,
         providerResults: result.providerResults?.map((pr) => ({
           providerId: pr.providerId,
@@ -717,4 +813,160 @@ function anonymizeEmail(email: string): string {
   const firstChar = username.charAt(0);
   const stars = '***';
   return `${firstChar}${stars}@${domain}`;
+}
+
+// ============================================================================
+// Threat Intelligence Handlers
+// ============================================================================
+
+/**
+ * Handle URL threat analysis request
+ */
+async function handleCheckURL(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { url: string } };
+    const result = await analyzeURL(payload.url);
+    sendResponse({ result });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error checking URL:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle email breach check request
+ */
+async function handleCheckEmailBreach(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { email: string } };
+    const result = await checkEmailBreach(payload.email);
+    sendResponse({ result });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error checking email breach:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle domain squatting detection request
+ */
+async function handleCheckDomainSquatting(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { domain: string } };
+    const result = await detectDomainSquatting(payload.domain);
+    sendResponse({ result });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error checking domain squatting:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle threat report generation request
+ */
+async function handleGenerateThreatReport(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { domain: string; email?: string; tier: 'free' | 'basic' | 'professional' | 'enterprise' } };
+    const report = await generateThreatReport({
+      domain: payload.domain,
+      email: payload.email,
+      tier: payload.tier || 'free',
+    });
+    sendResponse({ report });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error generating threat report:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle deepfake detection request
+ */
+async function handleCheckDeepfake(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { mediaUrl: string; mediaType: 'image' | 'video' | 'audio' } };
+    const result = await detectDeepfake(payload.mediaUrl, payload.mediaType);
+    sendResponse({ result });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error checking deepfake:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle brand monitoring request
+ */
+async function handleMonitorBrand(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { brandName: string; officialDomains: string[] } };
+    const result = await monitorBrand(payload.brandName, payload.officialDomains);
+    sendResponse({ result });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error monitoring brand:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+// ============================================================================
+// Vulnerability Hunter Handlers
+// ============================================================================
+
+/**
+ * Handle vulnerability hunter start request
+ */
+async function handleVulnHunterStart(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { twitter?: { bearerToken: string; enabled: boolean }; github?: { token: string; enabled: boolean } } };
+
+    console.info(`${EXTENSION_NAME}: Starting vulnerability hunter...`);
+    const discoveries = await vulnHunter.startMonitoring(payload);
+
+    sendResponse({ discoveries });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error starting vulnerability hunter:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle get discoveries request
+ */
+function handleVulnHunterGetDiscoveries(sendResponse: (response: unknown) => void): void {
+  try {
+    const discoveries = vulnHunter.getDiscoveries();
+    sendResponse({ discoveries });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error getting discoveries:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle analyze discovery request
+ */
+async function handleVulnHunterAnalyze(message: Message, sendResponse: (response: unknown) => void): Promise<void> {
+  try {
+    const { payload } = message as { payload: { discoveryId: string; githubToken: string } };
+
+    console.info(`${EXTENSION_NAME}: Analyzing discovery ${payload.discoveryId}...`);
+    const discovery = await vulnHunter.analyzeDiscovery(payload.discoveryId, payload.githubToken);
+
+    sendResponse({ discovery });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error analyzing discovery:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
+}
+
+/**
+ * Handle clear discoveries request
+ */
+function handleVulnHunterClear(sendResponse: (response: unknown) => void): void {
+  try {
+    vulnHunter.clearDiscoveries();
+    sendResponse({ success: true });
+  } catch (error) {
+    console.error(`${EXTENSION_NAME}: Error clearing discoveries:`, error);
+    sendResponse({ error: error instanceof Error ? error.message : 'Unknown error' });
+  }
 }

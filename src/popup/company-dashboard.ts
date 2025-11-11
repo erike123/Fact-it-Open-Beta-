@@ -3,8 +3,8 @@
  * Shows company-wide security metrics and team activity
  */
 
-import { MessageType, CompanyDashboardData, EXTENSION_VERSION } from '@/shared/types';
-import { EXTENSION_NAME } from '@/shared/constants';
+import { MessageType, CompanyDashboardData } from '@/shared/types';
+import { EXTENSION_NAME, EXTENSION_VERSION } from '@/shared/constants';
 
 console.info(`${EXTENSION_NAME}: Company Dashboard loaded`);
 

@@ -25,6 +25,18 @@ export enum MessageType {
   GET_COMPANY_STATS = 'GET_COMPANY_STATS',
   GET_COMPANY_DASHBOARD_DATA = 'GET_COMPANY_DASHBOARD_DATA',
   TRACK_THREAT_BLOCKED = 'TRACK_THREAT_BLOCKED',
+  // Threat Intelligence
+  CHECK_URL = 'THREAT_CHECK_URL',
+  CHECK_EMAIL_BREACH = 'THREAT_CHECK_EMAIL_BREACH',
+  CHECK_DOMAIN_SQUATTING = 'THREAT_CHECK_DOMAIN_SQUATTING',
+  GENERATE_THREAT_REPORT = 'THREAT_GENERATE_REPORT',
+  CHECK_DEEPFAKE = 'THREAT_CHECK_DEEPFAKE',
+  MONITOR_BRAND = 'THREAT_MONITOR_BRAND',
+  // Vulnerability Hunter
+  VULN_HUNTER_START = 'VULN_HUNTER_START',
+  VULN_HUNTER_GET_DISCOVERIES = 'VULN_HUNTER_GET_DISCOVERIES',
+  VULN_HUNTER_ANALYZE = 'VULN_HUNTER_ANALYZE',
+  VULN_HUNTER_CLEAR = 'VULN_HUNTER_CLEAR',
 }
 
 // Platform types
@@ -169,6 +181,73 @@ export interface GetDailyLimitMessage {
   type: MessageType.GET_DAILY_LIMIT;
 }
 
+// Threat Intelligence message interfaces
+export interface CheckURLMessage {
+  type: MessageType.CHECK_URL;
+  payload: { url: string };
+}
+
+export interface CheckEmailBreachMessage {
+  type: MessageType.CHECK_EMAIL_BREACH;
+  payload: { email: string };
+}
+
+export interface CheckDomainSquattingMessage {
+  type: MessageType.CHECK_DOMAIN_SQUATTING;
+  payload: { domain: string };
+}
+
+export interface GenerateThreatReportMessage {
+  type: MessageType.GENERATE_THREAT_REPORT;
+  payload: {
+    domain: string;
+    email?: string;
+    tier: 'free' | 'basic' | 'professional' | 'enterprise';
+  };
+}
+
+export interface CheckDeepfakeMessage {
+  type: MessageType.CHECK_DEEPFAKE;
+  payload: {
+    mediaUrl: string;
+    mediaType: 'image' | 'video' | 'audio';
+  };
+}
+
+export interface MonitorBrandMessage {
+  type: MessageType.MONITOR_BRAND;
+  payload: {
+    brandName: string;
+    officialDomains: string[];
+  };
+}
+
+// Vulnerability Hunter message interfaces
+export interface VulnHunterStartMessage {
+  type: MessageType.VULN_HUNTER_START;
+  payload: {
+    twitterBearerToken?: string;
+    githubToken: string;
+    keywords?: string[];
+  };
+}
+
+export interface VulnHunterGetDiscoveriesMessage {
+  type: MessageType.VULN_HUNTER_GET_DISCOVERIES;
+}
+
+export interface VulnHunterAnalyzeMessage {
+  type: MessageType.VULN_HUNTER_ANALYZE;
+  payload: {
+    discoveryId: string;
+    githubToken: string;
+  };
+}
+
+export interface VulnHunterClearMessage {
+  type: MessageType.VULN_HUNTER_CLEAR;
+}
+
 // Union type for all messages
 export type Message =
   | CheckClaimMessage
@@ -190,7 +269,17 @@ export type Message =
   | SetUserEmailMessage
   | GetCompanyStatsMessage
   | GetCompanyDashboardDataMessage
-  | TrackThreatBlockedMessage;
+  | TrackThreatBlockedMessage
+  | CheckURLMessage
+  | CheckEmailBreachMessage
+  | CheckDomainSquattingMessage
+  | GenerateThreatReportMessage
+  | CheckDeepfakeMessage
+  | MonitorBrandMessage
+  | VulnHunterStartMessage
+  | VulnHunterGetDiscoveriesMessage
+  | VulnHunterAnalyzeMessage
+  | VulnHunterClearMessage;
 
 // Provider settings interface
 export interface ProviderSettings {

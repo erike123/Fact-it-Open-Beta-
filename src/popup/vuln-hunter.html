@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vulnerability Hunter</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 600px;
+        min-height: 400px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f5f5f5;
+        padding: 16px;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      .config {
+        background: white;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
+
+      .config h2 {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .checkbox-group {
+        margin: 8px 0;
+      }
+
+      label {
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .discoveries {
+        background: white;
+        border-radius: 8px;
+        padding: 16px;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .discoveries h2 {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .discovery {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #fafafa;
+      }
+
+      .discovery-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .platform-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .platform-twitter {
+        background: #1da1f2;
+        color: white;
+      }
+
+      .platform-github {
+        background: #333;
+        color: white;
+      }
+
+      .severity {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 12px;
+      }
+
+      .severity-critical {
+        background: #dc3545;
+        color: white;
+      }
+
+      .severity-high {
+        background: #fd7e14;
+        color: white;
+      }
+
+      .severity-medium {
+        background: #ffc107;
+        color: #333;
+      }
+
+      .severity-low {
+        background: #28a745;
+        color: white;
+      }
+
+      .severity-unknown {
+        background: #6c757d;
+        color: white;
+      }
+
+      .discovery-content {
+        font-size: 13px;
+        color: #333;
+        margin-bottom: 8px;
+        line-height: 1.4;
+      }
+
+      .discovery-footer {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .repo-link {
+        font-size: 12px;
+        color: #667eea;
+        text-decoration: none;
+        word-break: break-all;
+      }
+
+      .repo-link:hover {
+        text-decoration: underline;
+      }
+
+      .status {
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 12px;
+        background: #e0e0e0;
+        color: #333;
+      }
+
+      .status-analyzing {
+        background: #ffc107;
+      }
+
+      .status-analyzed {
+        background: #28a745;
+        color: white;
+      }
+
+      .analyze-btn {
+        font-size: 11px;
+        padding: 4px 12px;
+        width: auto;
+        margin: 0;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #999;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        border-radius: 50%;
+        border-top-color: #667eea;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .stats {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .stat-card {
+        flex: 1;
+        background: white;
+        padding: 12px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        font-size: 11px;
+        color: #666;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>🔍 Vulnerability Hunter</h1>
+      <p class="subtitle">Automated security intelligence monitoring</p>
+    </div>
+
+    <div class="config">
+      <h2>Configuration</h2>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="twitterEnabled" />
+          Twitter/X Monitoring
+        </label>
+      </div>
+      <input type="password" id="twitterToken" placeholder="Twitter Bearer Token (optional)" />
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" id="githubEnabled" checked />
+          GitHub Monitoring
+        </label>
+      </div>
+      <input type="password" id="githubToken" placeholder="GitHub Personal Access Token" />
+
+      <button id="startBtn">🚀 Start Hunting</button>
+      <button id="clearBtn" style="background: #dc3545; margin-top: 4px;">🗑️ Clear Results</button>
+    </div>
+
+    <div class="stats" id="stats" style="display: none;">
+      <div class="stat-card">
+        <div class="stat-value" id="totalDiscoveries">0</div>
+        <div class="stat-label">Discoveries</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="criticalCount">0</div>
+        <div class="stat-label">Critical</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="analyzedCount">0</div>
+        <div class="stat-label">Analyzed</div>
+      </div>
+    </div>
+
+    <div class="discoveries">
+      <h2>Discovered Vulnerabilities</h2>
+      <div id="discoveryList">
+        <div class="empty-state">
+          Click "Start Hunting" to begin monitoring for vulnerability disclosures
+        </div>
+      </div>
+    </div>
+
+    <script src="vuln-hunter.js"></script>
+  </body>
+</html>
