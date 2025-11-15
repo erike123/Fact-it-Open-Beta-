@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fact-It Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <!-- Header with subscription info -->
+    <header class="dashboard-header">
+      <div class="user-info">
+        <h1>Fact-It Dashboard</h1>
+        <div class="subscription-badge" id="subscriptionBadge">
+          <span class="plan-name">PRO Plan</span>
+          <span class="plan-cost">$5.99/month</span>
+        </div>
+      </div>
+
+      <div class="usage-summary">
+        <div class="usage-stat">
+          <span class="label">This Month</span>
+          <span class="value" id="monthlySpending">$0.34</span>
+        </div>
+        <div class="usage-stat">
+          <span class="label">Checks Today</span>
+          <span class="value" id="checksToday">12</span>
+        </div>
+        <div class="usage-stat">
+          <span class="label">Avg Cost/Check</span>
+          <span class="value" id="avgCost">$0.028</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- AI Provider Selector -->
+    <section class="provider-selector">
+      <h2>Select AI Providers</h2>
+      <p class="subtitle">Choose which AI models to use for fact-checking. More providers = higher accuracy + higher cost.</p>
+
+      <div class="provider-grid">
+
+        <!-- Groq (Always enabled for baseline) -->
+        <div class="provider-card baseline">
+          <div class="provider-header">
+            <input type="checkbox" id="provider-groq" checked disabled>
+            <label for="provider-groq">
+              <img src="../icons/groq-logo.png" alt="Groq" class="provider-logo">
+              <span class="provider-name">Groq</span>
+            </label>
+            <span class="cost-badge free">FREE</span>
+          </div>
+          <p class="provider-benefit">⚡ Fastest AI - Instant baseline verification (always included)</p>
+          <div class="provider-stats">
+            <span>Model: Llama 3.3 70B</span>
+            <span>Speed: ~2s</span>
+          </div>
+        </div>
+
+        <!-- Perplexity -->
+        <div class="provider-card" id="card-perplexity">
+          <div class="provider-header">
+            <input type="checkbox" id="provider-perplexity" class="provider-checkbox">
+            <label for="provider-perplexity">
+              <img src="../icons/perplexity-logo.png" alt="Perplexity" class="provider-logo">
+              <span class="provider-name">Perplexity</span>
+            </label>
+            <span class="cost-badge">$0.005/check</span>
+          </div>
+          <p class="provider-benefit">🔍 Best for real-time news - Live citations from web search</p>
+          <div class="provider-stats">
+            <span>Model: Sonar Pro</span>
+            <span>Speed: ~8s</span>
+            <span>Accuracy: 92%</span>
+          </div>
+        </div>
+
+        <!-- Anthropic Claude -->
+        <div class="provider-card" id="card-anthropic">
+          <div class="provider-header">
+            <input type="checkbox" id="provider-anthropic" class="provider-checkbox">
+            <label for="provider-anthropic">
+              <img src="../icons/anthropic-logo.png" alt="Anthropic" class="provider-logo">
+              <span class="provider-name">Anthropic Claude</span>
+            </label>
+            <span class="cost-badge">$0.020/check</span>
+          </div>
+          <p class="provider-benefit">🧠 Best reasoning - Deep context understanding and nuance detection</p>
+          <div class="provider-stats">
+            <span>Model: Claude 3.5 Sonnet</span>
+            <span>Speed: ~10s</span>
+            <span>Accuracy: 94%</span>
+          </div>
+        </div>
+
+        <!-- OpenAI GPT-4 -->
+        <div class="provider-card" id="card-openai">
+          <div class="provider-header">
+            <input type="checkbox" id="provider-openai" class="provider-checkbox">
+            <label for="provider-openai">
+              <img src="../icons/openai-logo.png" alt="OpenAI" class="provider-logo">
+              <span class="provider-name">OpenAI GPT-4</span>
+            </label>
+            <span class="cost-badge">$0.015/check</span>
+          </div>
+          <p class="provider-benefit">🎯 Most widely-trusted - Industry-standard fact verification</p>
+          <div class="provider-stats">
+            <span>Model: GPT-4o</span>
+            <span>Speed: ~7s</span>
+            <span>Accuracy: 91%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Combos -->
+      <div class="quick-combos">
+        <h3>Recommended Combinations</h3>
+        <button class="combo-btn" data-combo="groq,perplexity">
+          <span class="combo-name">⚡ Speed + Search</span>
+          <span class="combo-providers">Groq + Perplexity</span>
+          <span class="combo-cost">~$0.005/check</span>
+        </button>
+        <button class="combo-btn" data-combo="groq,anthropic">
+          <span class="combo-name">🧠 Speed + Reasoning</span>
+          <span class="combo-providers">Groq + Claude</span>
+          <span class="combo-cost">~$0.020/check</span>
+        </button>
+        <button class="combo-btn" data-combo="groq,perplexity,anthropic">
+          <span class="combo-name">🎯 Balanced (Recommended)</span>
+          <span class="combo-providers">Groq + Perplexity + Claude</span>
+          <span class="combo-cost">~$0.025/check</span>
+        </button>
+        <button class="combo-btn" data-combo="all">
+          <span class="combo-name">💎 Maximum Accuracy</span>
+          <span class="combo-providers">All 4 Providers</span>
+          <span class="combo-cost">~$0.040/check</span>
+        </button>
+      </div>
+
+      <div class="estimated-cost">
+        <p>Estimated cost with current selection: <strong id="estimatedCost">$0.025</strong> per fact-check</p>
+        <p class="cost-note">You pay $5.99/month flat fee. This shows your usage cost we cover.</p>
+      </div>
+    </section>
+
+    <!-- Custom Criteria -->
+    <section class="criteria-section">
+      <h2>Custom Verification Criteria</h2>
+      <p class="subtitle">Add custom context to improve fact-checking accuracy for your specific needs.</p>
+
+      <div class="criteria-tabs">
+        <button class="criteria-tab active" data-tab="general">General</button>
+        <button class="criteria-tab" data-tab="encorp">Encorp.io</button>
+        <button class="criteria-tab" data-tab="nexo">Nexo</button>
+        <button class="criteria-tab" data-tab="future">Future</button>
+        <button class="criteria-tab" data-tab="custom">Custom</button>
+      </div>
+
+      <div class="criteria-content">
+
+        <!-- General Tab -->
+        <div class="criteria-tab-content active" id="tab-general">
+          <h3>General Fact-Checking</h3>
+          <div class="criteria-options">
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-breaking-news" checked>
+              <div class="option-info">
+                <span class="option-name">Prioritize Breaking News</span>
+                <span class="option-desc">Focus on time-sensitive claims and recent events</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-political" checked>
+              <div class="option-info">
+                <span class="option-name">Political Context</span>
+                <span class="option-desc">Check government sources and official statements</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-scientific">
+              <div class="option-info">
+                <span class="option-name">Scientific Rigor</span>
+                <span class="option-desc">Verify against peer-reviewed research</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Encorp.io Tab -->
+        <div class="criteria-tab-content" id="tab-encorp">
+          <h3>Encorp.io Context</h3>
+          <p class="context-description">
+            <strong>Encorp.io</strong> is a Bulgarian corporate intelligence platform.
+            Enable this to cross-reference claims with Bulgarian company data, financial records, and business news.
+          </p>
+          <div class="criteria-options">
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-encorp-companies">
+              <div class="option-info">
+                <span class="option-name">Bulgarian Company Verification</span>
+                <span class="option-desc">Check claims against Encorp.io's Bulgarian business database</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-encorp-financial">
+              <div class="option-info">
+                <span class="option-name">Financial Claims Priority</span>
+                <span class="option-desc">Focus on revenue, profit, and financial metrics accuracy</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-encorp-ownership">
+              <div class="option-info">
+                <span class="option-name">Ownership & Leadership</span>
+                <span class="option-desc">Verify claims about company owners and executives</span>
+              </div>
+            </label>
+          </div>
+          <div class="context-notes">
+            <p><strong>Example use case:</strong> "X company made €5M in profit last year"</p>
+            <p>With Encorp.io criteria enabled, the AI will cross-check Bulgarian company registries and financial filings.</p>
+          </div>
+        </div>
+
+        <!-- Nexo Tab -->
+        <div class="criteria-tab-content" id="tab-nexo">
+          <h3>Nexo Context</h3>
+          <p class="context-description">
+            <strong>Nexo</strong> is a crypto lending platform. Enable this to verify crypto-related claims
+            with blockchain data, DeFi protocols, and crypto market intelligence.
+          </p>
+          <div class="criteria-options">
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-nexo-crypto">
+              <div class="option-info">
+                <span class="option-name">Cryptocurrency Price Verification</span>
+                <span class="option-desc">Check crypto prices and market caps in real-time</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-nexo-defi">
+              <div class="option-info">
+                <span class="option-name">DeFi Protocol Safety</span>
+                <span class="option-desc">Verify DeFi platform security and audit status</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-nexo-scam">
+              <div class="option-info">
+                <span class="option-name">Crypto Scam Detection</span>
+                <span class="option-desc">Enhanced detection of crypto giveaway scams and rug pulls</span>
+              </div>
+            </label>
+          </div>
+          <div class="context-notes">
+            <p><strong>Example use case:</strong> "Bitcoin just crashed to $10K!"</p>
+            <p>With Nexo criteria enabled, the AI will check live crypto prices and market sentiment.</p>
+          </div>
+        </div>
+
+        <!-- Future Tab -->
+        <div class="criteria-tab-content" id="tab-future">
+          <h3>Future Context</h3>
+          <p class="context-description">
+            <strong>Future</strong> context focuses on forward-looking claims, predictions, and trend analysis.
+            Enable this for fact-checking about upcoming events, forecasts, and speculative statements.
+          </p>
+          <div class="criteria-options">
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-future-predictions">
+              <div class="option-info">
+                <span class="option-name">Prediction Tracking</span>
+                <span class="option-desc">Verify claims about future events with historical accuracy</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-future-trends">
+              <div class="option-info">
+                <span class="option-name">Trend Analysis</span>
+                <span class="option-desc">Check if claimed trends are supported by data</span>
+              </div>
+            </label>
+            <label class="criteria-option">
+              <input type="checkbox" id="criteria-future-speculation">
+              <div class="option-info">
+                <span class="option-name">Speculation Warning</span>
+                <span class="option-desc">Flag speculative claims vs. factual statements</span>
+              </div>
+            </label>
+          </div>
+          <div class="context-notes">
+            <p><strong>Example use case:</strong> "AI will replace all jobs by 2030"</p>
+            <p>With Future criteria enabled, the AI will analyze expert consensus and historical prediction accuracy.</p>
+          </div>
+        </div>
+
+        <!-- Custom Tab -->
+        <div class="criteria-tab-content" id="tab-custom">
+          <h3>Custom Criteria</h3>
+          <p class="context-description">Add your own verification rules and priorities.</p>
+
+          <div class="custom-criteria-input">
+            <label for="custom-context">Custom Context Prompt:</label>
+            <textarea
+              id="custom-context"
+              rows="4"
+              placeholder="Example: 'Focus on Bulgarian sources and verify against local news agencies like bTV, Nova, and Dnevnik.'"
+            ></textarea>
+          </div>
+
+          <div class="custom-criteria-input">
+            <label for="custom-sources">Preferred Sources (comma-separated):</label>
+            <input
+              type="text"
+              id="custom-sources"
+              placeholder="Example: btv.bg, dnevnik.bg, capital.bg"
+            >
+          </div>
+
+          <button class="btn-save-custom" id="saveCustomCriteria">Save Custom Criteria</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Recent Fact-Checks Comparison -->
+    <section class="recent-checks">
+      <h2>Recent Fact-Checks</h2>
+      <p class="subtitle">Compare results from different AI providers to see consensus and disagreements.</p>
+
+      <div class="checks-list" id="recentChecksList">
+
+        <!-- Example Fact-Check Card -->
+        <div class="check-card">
+          <div class="check-header">
+            <span class="check-timestamp">2 minutes ago</span>
+            <span class="check-cost">Cost: $0.025</span>
+          </div>
+
+          <div class="check-claim">
+            <p>"The Bulgarian government announced a new 15% tax on cryptocurrency profits."</p>
+          </div>
+
+          <div class="check-verdicts">
+            <div class="verdict-row">
+              <span class="provider-badge groq">Groq</span>
+              <span class="verdict unknown">NEEDS WEB SEARCH</span>
+              <span class="confidence">40%</span>
+            </div>
+            <div class="verdict-row">
+              <span class="provider-badge perplexity">Perplexity</span>
+              <span class="verdict false">FALSE</span>
+              <span class="confidence">85%</span>
+            </div>
+            <div class="verdict-row">
+              <span class="provider-badge anthropic">Claude</span>
+              <span class="verdict false">FALSE</span>
+              <span class="confidence">90%</span>
+            </div>
+          </div>
+
+          <div class="check-consensus">
+            <div class="consensus-badge high">
+              <span class="consensus-label">CONSENSUS:</span>
+              <span class="consensus-verdict">FALSE</span>
+              <span class="consensus-agreement">2/3 providers agree (88% confidence)</span>
+            </div>
+          </div>
+
+          <div class="check-explanation">
+            <p><strong>Why FALSE:</strong> No official government announcement found. Bulgarian Ministry of Finance has not proposed any cryptocurrency tax changes in 2024. This appears to be misinformation.</p>
+          </div>
+
+          <button class="btn-expand" data-check-id="check-1">View Full Report</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Cost Breakdown Chart -->
+    <section class="cost-breakdown">
+      <h2>Monthly Cost Breakdown</h2>
+      <div class="cost-chart">
+        <canvas id="costChart"></canvas>
+      </div>
+      <div class="cost-summary">
+        <div class="cost-item">
+          <span class="cost-provider">Groq</span>
+          <span class="cost-value">$0.00</span>
+          <span class="cost-percentage">0%</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-provider">Perplexity</span>
+          <span class="cost-value">$0.15</span>
+          <span class="cost-percentage">44%</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-provider">Claude</span>
+          <span class="cost-value">$0.19</span>
+          <span class="cost-percentage">56%</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

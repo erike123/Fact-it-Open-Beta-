@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fact-It Support | Help & Documentation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .header p {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 60px 40px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 32px;
+      color: #667eea;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .section h3 {
+      font-size: 24px;
+      color: #333;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    .section p, .section li {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .section ul {
+      margin-left: 30px;
+      margin-top: 10px;
+    }
+
+    .faq-item {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .faq-item h4 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .faq-item p {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .pricing-preview {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .pricing-preview h3 {
+      color: white;
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .pricing-preview p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .contact-box {
+      background: #667eea;
+      color: white;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .contact-box h3 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .contact-box a {
+      color: white;
+      font-size: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid white;
+      padding-bottom: 2px;
+    }
+
+    .contact-box a:hover {
+      opacity: 0.8;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .feature-card {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 12px;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: #667eea;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+
+    .feature-card h4 {
+      font-size: 22px;
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #27ae60;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .badge.coming-soon {
+      background: #f39c12;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 32px;
+      }
+
+      .content {
+        padding: 30px 20px;
+      }
+
+      .section h2 {
+        font-size: 24px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>🛡️ Fact-It Support</h1>
+    <p>AI-Powered Scam Detection & Fact-Checking for Everyone</p>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Getting Started -->
+    <div class="section">
+      <h2>🚀 Getting Started</h2>
+      <p>Fact-It is a free browser extension that protects you from online scams, phishing attacks, and misinformation.</p>
+
+      <h3>Installation</h3>
+      <ol style="margin-left: 30px; font-size: 18px; color: #555;">
+        <li>Install from <a href="https://addons.mozilla.org/firefox/addon/fact-it/" style="color: #667eea;">Firefox Add-ons</a> or <a href="#" style="color: #667eea;">Chrome Web Store</a></li>
+        <li>Click the Fact-It icon in your browser toolbar</li>
+        <li>Browse social media normally (Twitter, Facebook, LinkedIn)</li>
+        <li>Click "Fact Check" button on any post to verify it</li>
+      </ol>
+
+      <h3>Supported Platforms</h3>
+      <ul>
+        <li><strong>Twitter/X:</strong> Automatic scam detection and fact-checking</li>
+        <li><strong>Facebook:</strong> Check posts for misinformation</li>
+        <li><strong>LinkedIn:</strong> Verify professional claims</li>
+        <li><strong>Any Website:</strong> Right-click text to fact-check</li>
+      </ul>
+    </div>
+
+    <!-- Features -->
+    <div class="section">
+      <h2>✨ Features</h2>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>🔐 Scam Detection <span class="badge">FREE</span></h4>
+          <p>Automatically detects crypto scams, fake giveaways, and fraudulent schemes with 100+ pattern matching.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>🎣 Phishing Protection <span class="badge">FREE</span></h4>
+          <p>Identifies typosquatting (paypa1.com), suspicious URLs, and phishing attempts in real-time.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>🌐 Domain Intelligence <span class="badge">FREE</span></h4>
+          <p>WHOIS lookup, SSL certificate validation, and security reputation checks for all links.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>🤖 AI Fact-Checking <span class="badge">FREE</span></h4>
+          <p>Powered by Groq AI (Llama 3.3 70B) with web search verification. 100 checks/day free.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>🇧🇬 Bulgarian Language <span class="badge">FREE</span></h4>
+          <p>All warnings and recommendations in Bulgarian and English for maximum clarity.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>📊 Company Dashboard <span class="badge coming-soon">COMING SOON</span></h4>
+          <p>Track threats blocked across your organization. Perfect for businesses and teams.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section">
+      <h2>❓ Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <h4>Is Fact-It really free?</h4>
+        <p>Yes! Fact-It is 100% free with 100 fact-checks per day. You can optionally add your own AI API keys for unlimited checks.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Do I need to create an account?</h4>
+        <p>No registration required! Just install and start using immediately.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>What data does Fact-It collect?</h4>
+        <p>None! We don't collect personal data, browsing history, or any identifying information. Everything is stored locally in your browser.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>How accurate is the fact-checking?</h4>
+        <p>Fact-It uses Groq AI (Llama 3.3 70B) with real-time web search. Accuracy depends on available sources. Always use critical thinking!</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Can I use Fact-It for my business?</h4>
+        <p>Yes! The free version works for everyone. We're planning a Premium Business tier with advanced features (coming soon).</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>How do I increase my daily limit?</h4>
+        <p>You can add your own API keys from Groq, OpenAI, Anthropic, or Perplexity in the extension settings for unlimited checks.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>What languages are supported?</h4>
+        <p>Currently: Bulgarian and English. More languages coming soon!</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Is my data private?</h4>
+        <p>Absolutely! We only send post text to AI providers for fact-checking. No personal data, no browsing history, no tracking.</p>
+      </div>
+    </div>
+
+    <!-- Future Pricing Preview -->
+    <div class="section">
+      <h2>💎 Future Premium Features</h2>
+      <p>Fact-It will always have a free tier! We're planning optional premium features for power users and businesses:</p>
+
+      <div class="pricing-preview">
+        <h3>Premium Plans (Coming 2025)</h3>
+        <p><strong>Free Forever:</strong> 100 checks/day, scam detection, phishing protection</p>
+        <p><strong>Pro (Planned):</strong> Unlimited checks, advanced AI models, priority support</p>
+        <p><strong>Business (Planned):</strong> Team dashboard, threat analytics, company-wide protection</p>
+        <p style="margin-top: 20px; font-size: 16px; opacity: 0.9;">
+          ✨ Early adopters will get lifetime discounts!
+        </p>
+      </div>
+    </div>
+
+    <!-- Troubleshooting -->
+    <div class="section">
+      <h2>🔧 Troubleshooting</h2>
+
+      <div class="faq-item">
+        <h4>Fact Check button not appearing</h4>
+        <p><strong>Solution:</strong> Refresh the page (Ctrl+R or Cmd+R). If still not working, try disabling and re-enabling the extension.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>"Daily limit reached" message</h4>
+        <p><strong>Solution:</strong> Wait until midnight (resets daily) or add your own API key in Settings for unlimited checks.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Extension not working on specific website</h4>
+        <p><strong>Solution:</strong> Some websites block extensions. Try refreshing the page or check if the site is in our supported list.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>Slow fact-checking results</h4>
+        <p><strong>Solution:</strong> AI processing takes 3-5 seconds. If longer, check your internet connection or try again later.</p>
+      </div>
+    </div>
+
+    <!-- How to Add Your Own API Keys -->
+    <div class="section">
+      <h2>🔑 How to Add Your Own API Keys</h2>
+      <p>Get unlimited fact-checks by adding your own AI provider API keys:</p>
+
+      <h3>Supported Providers:</h3>
+      <ul>
+        <li><strong>Groq</strong> (Recommended): Free tier, very fast - <a href="https://console.groq.com" style="color: #667eea;">Get API Key</a></li>
+        <li><strong>OpenAI</strong>: GPT-4 with web search - <a href="https://platform.openai.com" style="color: #667eea;">Get API Key</a></li>
+        <li><strong>Anthropic</strong>: Claude 3.5 with Brave Search - <a href="https://console.anthropic.com" style="color: #667eea;">Get API Key</a></li>
+        <li><strong>Perplexity</strong>: Sonar Pro with citations - <a href="https://www.perplexity.ai" style="color: #667eea;">Get API Key</a></li>
+      </ul>
+
+      <h3>Steps:</h3>
+      <ol style="margin-left: 30px; font-size: 18px; color: #555;">
+        <li>Click Fact-It icon in browser toolbar</li>
+        <li>Go to "Settings" tab</li>
+        <li>Enable your chosen provider</li>
+        <li>Paste your API key</li>
+        <li>Click "Test API Key" to verify</li>
+        <li>Enjoy unlimited fact-checks!</li>
+      </ol>
+
+      <p style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+        <strong>⚠️ Note:</strong> Your API keys are stored locally in your browser. We never see or store them on any server.
+      </p>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="section">
+      <div class="contact-box">
+        <h3>📧 Need Help?</h3>
+        <p>Contact our support team:</p>
+        <a href="mailto:email33@abv.bg">email33@abv.bg</a>
+
+        <p style="margin-top: 30px; font-size: 16px; opacity: 0.9;">
+          We typically respond within 24-48 hours.<br>
+          For urgent security issues, please mark email as "URGENT".
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 40px 20px; color: #999; border-top: 1px solid #e0e0e0; margin-top: 60px;">
+      <p>&copy; 2024 Fact-It. Made with ❤️ in Bulgaria 🇧🇬</p>
+      <p style="margin-top: 10px;">
+        <a href="https://www.security-program.com/" style="color: #667eea; text-decoration: none;">Homepage</a> |
+        <a href="https://addons.mozilla.org/firefox/addon/fact-it/" style="color: #667eea; text-decoration: none;">Firefox</a> |
+        <a href="#" style="color: #667eea; text-decoration: none;">Chrome</a> |
+        <a href="privacy.html" style="color: #667eea; text-decoration: none;">Privacy Policy</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

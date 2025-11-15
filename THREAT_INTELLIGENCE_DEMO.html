@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fact-It Threat Intelligence Demo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #667eea;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #764ba2;
+      margin-top: 30px;
+    }
+    .demo-section {
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .result pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 5px 5px 5px 0;
+    }
+    .badge-critical { background: #dc3545; color: white; }
+    .badge-high { background: #fd7e14; color: white; }
+    .badge-medium { background: #ffc107; color: #333; }
+    .badge-low { background: #28a745; color: white; }
+    .badge-info { background: #17a2b8; color: white; }
+    .grade {
+      font-size: 48px;
+      font-weight: bold;
+      padding: 20px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 10px 0;
+    }
+    .grade-A { background: #28a745; color: white; }
+    .grade-B { background: #5bc0de; color: white; }
+    .grade-C { background: #ffc107; color: #333; }
+    .grade-D { background: #fd7e14; color: white; }
+    .grade-F { background: #dc3545; color: white; }
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(102, 126, 234, 0.3);
+      border-radius: 50%;
+      border-top-color: #667eea;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .warning {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+    .success {
+      background: #d4edda;
+      border: 1px solid #28a745;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+    .error {
+      background: #f8d7da;
+      border: 1px solid #dc3545;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Fact-It Threat Intelligence Platform - Demo</h1>
+    <p><strong>Test all threat intelligence features right here!</strong></p>
+    <p class="warning">
+      ⚠️ <strong>Note:</strong> This demo requires the Fact-It extension to be loaded in Chrome.
+      Open Chrome DevTools (F12) to see detailed console logs.
+    </p>
+
+    <!-- URL Analysis -->
+    <div class="demo-section">
+      <h2>1. URL Threat Analysis</h2>
+      <p>Check if a URL is malicious using Google Safe Browsing, URLhaus, and PhishTank.</p>
+      <input type="text" id="urlInput" placeholder="Enter URL (e.g., https://google.com)" value="https://google.com">
+      <button onclick="checkURL()">Analyze URL</button>
+      <div class="result" id="urlResult" style="display: none;"></div>
+    </div>
+
+    <!-- Email Breach Check -->
+    <div class="demo-section">
+      <h2>2. Credential Breach Monitoring</h2>
+      <p>Check if an email has been compromised in data breaches (Have I Been Pwned).</p>
+      <input type="email" id="emailInput" placeholder="Enter email address" value="test@example.com">
+      <button onclick="checkEmailBreach()">Check Breaches</button>
+      <div class="result" id="emailResult" style="display: none;"></div>
+    </div>
+
+    <!-- Domain Squatting -->
+    <div class="demo-section">
+      <h2>3. Domain Squatting Detection</h2>
+      <p>Find typosquatting, homograph, and combosquatting variations of a domain.</p>
+      <input type="text" id="domainInput" placeholder="Enter domain (e.g., google.com)" value="google.com">
+      <button onclick="checkDomainSquatting()">Detect Squatting</button>
+      <div class="result" id="domainResult" style="display: none;"></div>
+    </div>
+
+    <!-- Misinformation Check -->
+    <div class="demo-section">
+      <h2>4. Misinformation Campaign Detection</h2>
+      <p>Check if text matches known misinformation campaigns.</p>
+      <textarea id="textInput" rows="4" placeholder="Enter text to check for misinformation">5G causes COVID-19 and weakens the immune system</textarea>
+      <button onclick="checkMisinformation()">Check Misinformation</button>
+      <div class="result" id="misinfoResult" style="display: none;"></div>
+    </div>
+
+    <!-- Threat Report -->
+    <div class="demo-section">
+      <h2>5. Generate Threat Modeling Report</h2>
+      <p>Comprehensive security assessment for a domain (€99-€50K value).</p>
+      <input type="text" id="reportDomain" placeholder="Domain (e.g., example.com)" value="example.com">
+      <select id="reportTier">
+        <option value="free">Free Tier</option>
+        <option value="basic" selected>Basic (€99)</option>
+        <option value="professional">Professional (€500/mo)</option>
+        <option value="enterprise">Enterprise (€50K/yr)</option>
+      </select>
+      <button onclick="generateReport()">Generate Report</button>
+      <div class="result" id="reportResult" style="display: none;"></div>
+    </div>
+
+    <!-- Brand Monitoring -->
+    <div class="demo-section">
+      <h2>6. Brand Monitoring</h2>
+      <p>Monitor for brand impersonation and domain squatting.</p>
+      <input type="text" id="brandName" placeholder="Brand name (e.g., Google)" value="Google">
+      <input type="text" id="brandDomains" placeholder="Official domains (comma-separated)" value="google.com,google.co.uk">
+      <button onclick="monitorBrand()">Monitor Brand</button>
+      <div class="result" id="brandResult" style="display: none;"></div>
+    </div>
+
+    <!-- Deepfake Detection -->
+    <div class="demo-section">
+      <h2>7. Deepfake / Synthetic Media Detection</h2>
+      <p>Detect AI-generated images, videos, or audio.</p>
+      <input type="text" id="mediaUrl" placeholder="Media URL" value="https://example.com/image.jpg">
+      <select id="mediaType">
+        <option value="image">Image</option>
+        <option value="video">Video</option>
+        <option value="audio">Audio</option>
+      </select>
+      <button onclick="checkDeepfake()">Detect Deepfake</button>
+      <div class="result" id="deepfakeResult" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Check if extension is loaded
+    if (typeof chrome === 'undefined' || !chrome.runtime) {
+      document.body.innerHTML = '<div class="container"><div class="error"><h2>⚠️ Extension Not Loaded</h2><p>Please load the Fact-It extension in Chrome and refresh this page.</p></div></div>';
+    }
+
+    function showLoading(resultId) {
+      document.getElementById(resultId).style.display = 'block';
+      document.getElementById(resultId).innerHTML = '<div class="loading"></div> Processing...';
+    }
+
+    function showResult(resultId, data, isError = false) {
+      const resultDiv = document.getElementById(resultId);
+      resultDiv.style.display = 'block';
+
+      if (isError) {
+        resultDiv.innerHTML = `<div class="error"><strong>Error:</strong> ${data}</div>`;
+      } else {
+        resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      }
+    }
+
+    async function checkURL() {
+      const url = document.getElementById('urlInput').value;
+      showLoading('urlResult');
+
+      chrome.runtime.sendMessage({
+        type: 'THREAT_CHECK_URL',
+        payload: { url }
+      }, (response) => {
+        if (response.error) {
+          showResult('urlResult', response.error, true);
+        } else {
+          showResult('urlResult', response.result);
+        }
+      });
+    }
+
+    async function checkEmailBreach() {
+      const email = document.getElementById('emailInput').value;
+      showLoading('emailResult');
+
+      chrome.runtime.sendMessage({
+        type: 'THREAT_CHECK_EMAIL_BREACH',
+        payload: { email }
+      }, (response) => {
+        if (response.error) {
+          showResult('emailResult', response.error, true);
+        } else {
+          showResult('emailResult', response.result);
+        }
+      });
+    }
+
+    async function checkDomainSquatting() {
+      const domain = document.getElementById('domainInput').value;
+      showLoading('domainResult');
+
+      chrome.runtime.sendMessage({
+        type: 'THREAT_CHECK_DOMAIN_SQUATTING',
+        payload: { domain }
+      }, (response) => {
+        if (response.error) {
+          showResult('domainResult', response.error, true);
+        } else {
+          showResult('domainResult', response.result);
+        }
+      });
+    }
+
+    async function checkMisinformation() {
+      const text = document.getElementById('textInput').value;
+      showLoading('misinfoResult');
+
+      // Use the fact-checking pipeline which includes misinformation detection
+      chrome.runtime.sendMessage({
+        type: 'CHECK_CLAIM',
+        payload: { text, elementId: 'demo', platform: 'article' }
+      }, (response) => {
+        if (response.error) {
+          showResult('misinfoResult', response.error, true);
+        } else {
+          showResult('misinfoResult', response.payload);
+        }
+      });
+    }
+
+    async function generateReport() {
+      const domain = document.getElementById('reportDomain').value;
+      const tier = document.getElementById('reportTier').value;
+      showLoading('reportResult');
+
+      chrome.runtime.sendMessage({
+        type: 'THREAT_GENERATE_REPORT',
+        payload: { domain, tier }
+      }, (response) => {
+        if (response.error) {
+          showResult('reportResult', response.error, true);
+        } else {
+          const report = response.report;
+          const html = `
+            <div>
+              <h3>Threat Report: ${report.domain}</h3>
+              <div class="grade grade-${report.findings.compliance?.overall.grade || 'F'}">
+                Grade: ${report.findings.compliance?.overall.grade || 'N/A'}
+              </div>
+              <p><strong>Overall Risk Score:</strong> ${report.summary.overallRiskScore}/100</p>
+              <p><strong>Critical Findings:</strong> <span class="badge badge-critical">${report.summary.criticalFindings}</span></p>
+              <p><strong>High Findings:</strong> <span class="badge badge-high">${report.summary.highFindings}</span></p>
+              <p><strong>Medium Findings:</strong> <span class="badge badge-medium">${report.summary.mediumFindings}</span></p>
+              <p><strong>Low Findings:</strong> <span class="badge badge-low">${report.summary.lowFindings}</span></p>
+              <h4>Top Recommendations:</h4>
+              <ul>
+                ${report.recommendations.slice(0, 3).map(rec => `
+                  <li>
+                    <span class="badge badge-${rec.priority}">${rec.priority.toUpperCase()}</span>
+                    <strong>${rec.category}:</strong> ${rec.description}
+                  </li>
+                `).join('')}
+              </ul>
+              <p><strong>Pricing:</strong> ${report.pricing.tier} tier (€${report.pricing.reportCost})</p>
+              <details>
+                <summary>View Full Report (JSON)</summary>
+                <pre>${JSON.stringify(report, null, 2)}</pre>
+              </details>
+            </div>
+          `;
+          document.getElementById('reportResult').innerHTML = html;
+          document.getElementById('reportResult').style.display = 'block';
+        }
+      });
+    }
+
+    async function monitorBrand() {
+      const brandName = document.getElementById('brandName').value;
+      const officialDomains = document.getElementById('brandDomains').value.split(',').map(d => d.trim());
+      showLoading('brandResult');
+
+      chrome.runtime.sendMessage({
+        type: 'THREAT_MONITOR_BRAND',
+        payload: { brandName, officialDomains }
+      }, (response) => {
+        if (response.error) {
+          showResult('brandResult', response.error, true);
+        } else {
+          showResult('brandResult', response.result);
+        }
+      });
+    }
+
+    async function checkDeepfake() {
+      const mediaUrl = document.getElementById('mediaUrl').value;
+      const mediaType = document.getElementById('mediaType').value;
+      showLoading('deepfakeResult');
+
+      chrome.runtime.sendMessage({
+        type: 'THREAT_CHECK_DEEPFAKE',
+        payload: { mediaUrl, mediaType }
+      }, (response) => {
+        if (response.error) {
+          showResult('deepfakeResult', response.error, true);
+        } else {
+          showResult('deepfakeResult', response.result);
+        }
+      });
+    }
+
+    console.log('%c🛡️ Fact-It Threat Intelligence Platform', 'font-size: 24px; font-weight: bold; color: #667eea;');
+    console.log('%cAll threat intelligence features are now available!', 'font-size: 14px; color: #764ba2;');
+    console.log('Use the buttons above to test each feature, or call the APIs directly from this console.');
+  </script>
+</body>
+</html>

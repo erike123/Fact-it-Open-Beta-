@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(git fetch:*)",
+      "Bash(git stash:*)",
+      "Bash(git add:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run build:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd comprehensive security intelligence platform\n\nImplements three major security features:\n\n1. Phishing & Scam Detection (Automatic)\n   - 100+ scam pattern database (crypto, phishing, fake giveaways)\n   - Typosquatting detection (paypa1.com, faceb00k.com, etc.)\n   - Cryptocurrency scam detection\n   - Automatic integration with fact-checking pipeline\n   - Overrides verdict to FALSE for critical threats\n   - Shows safety recommendations\n\n2. Vulnerability Hunter (Functional UI)\n   - Twitter API v2 + GitHub Search API integration\n   - Keyword-based vulnerability discovery\n   - Automatic repository analysis\n   - Severity scoring (critical/high/medium/low)\n   - Simple, functional popup interface\n   - 24-hour caching\n\n3. Threat Intelligence Platform (Backend Ready)\n   - URL threat analysis (Google Safe Browsing, URLhaus, PhishTank)\n   - Credential breach monitoring (Have I Been Pwned)\n   - Security compliance checking (HTTPS, headers, DNS)\n   - NVD vulnerability database integration\n   - Brand monitoring & domain squatting detection\n   - Misinformation campaign correlation\n   - Automated threat report generation\n   - Message handlers integrated in service worker\n\nFiles created: 20 new files (~5,000 lines of code)\n- src/background/phishing-detector/ (2 files, 750 lines)\n- src/background/vulnerability-hunter/ (4 files, 1,100 lines)\n- src/background/threat-intelligence/ (8 files, 2,230 lines)\n- src/popup/vuln-hunter.html + .ts (450 lines)\n- src/shared/threat-intelligence-types.ts (300 lines)\n\nIntegration:\n- Added 10 new message types to MessageType enum\n- Added 10 new message interfaces\n- Added 10 new message handlers in service worker\n- Phishing detection runs automatically on every fact-check\n- Misinformation tracking integrated with fact-checking\n\nBuild status: ✅ All TypeScript checks pass, builds successfully\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(powershell:*)",
+      "Bash(dir:*)",
+      "Bash(unzip:*)",
+      "Bash(zip -r:*)",
+      "Bash(python create-firefox-zip.py:*)",
+      "Bash(cat:*)",
+      "Bash(python:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

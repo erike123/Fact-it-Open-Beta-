@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fact-It Demo - Test Posts</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #15202b;
+      color: white;
+      padding: 20px;
+    }
+    .instructions {
+      background: #1e2732;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    .post {
+      background: #1e2732;
+      border: 1px solid #38444d;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      max-width: 600px;
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin-right: 12px;
+    }
+    .author {
+      font-weight: bold;
+    }
+    .handle {
+      color: #8899a6;
+    }
+    .post-text {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .url {
+      color: #1da1f2;
+      text-decoration: none;
+    }
+    .crypto-address {
+      background: #253341;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: monospace;
+      color: #ffa500;
+      margin: 8px 0;
+    }
+    h1 {
+      color: #1da1f2;
+    }
+    h2 {
+      color: #ffa500;
+      margin-top: 30px;
+    }
+    code {
+      background: #253341;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #ffa500;
+    }
+  </style>
+</head>
+<body>
+
+<div class="instructions">
+  <h1>🎬 Fact-It Demo - Test Posts</h1>
+  <p><strong>Instructions for Recording:</strong></p>
+  <ol>
+    <li>Open Twitter/X in another tab</li>
+    <li>Open Browser Console (F12 or Ctrl+Shift+J)</li>
+    <li>Copy the JavaScript code for each demo below</li>
+    <li>Paste into console and press Enter</li>
+    <li>The fake post will appear on Twitter</li>
+    <li>Click "Fact Check" button on the injected post</li>
+    <li>Record the result</li>
+  </ol>
+  <p><strong>Note:</strong> These are fake posts injected for demo purposes only. They will not be visible to other users.</p>
+</div>
+
+<h2>📋 Demo 1: Crypto Scam Detection</h2>
+
+<div class="post">
+  <div class="post-header">
+    <div class="avatar"></div>
+    <div>
+      <div class="author">Elon Musk 🔵 (FAKE)</div>
+      <div class="handle">@fake_elonmusk · 2h</div>
+    </div>
+  </div>
+  <div class="post-text">
+    🚨 OFFICIAL GIVEAWAY! 🚨<br><br>
+
+    To celebrate reaching 200M followers, I'm giving away Bitcoin!<br><br>
+
+    📍 Send 0.1 BTC to this address:<br>
+    <div class="crypto-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+
+    📍 Receive 1 BTC back instantly!<br><br>
+
+    ⏰ First 100 people only! Ends in 30 minutes!
+  </div>
+</div>
+
+<p><strong>JavaScript to inject this post on Twitter:</strong></p>
+<pre style="background: #253341; padding: 15px; border-radius: 8px; overflow-x: auto;">
+<code>// Inject Crypto Scam Post
+const fakePost = document.createElement('article');
+fakePost.setAttribute('data-testid', 'tweet');
+fakePost.setAttribute('role', 'article');
+fakePost.style.cssText = 'border: 2px solid #c0392b; padding: 20px; margin: 20px; border-radius: 16px; background: #1e2732;';
+fakePost.innerHTML = `
+  &lt;div style="color: white; font-family: -apple-system, sans-serif;"&gt;
+    &lt;div style="display: flex; margin-bottom: 12px;"&gt;
+      &lt;div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-right: 12px;"&gt;&lt;/div&gt;
+      &lt;div&gt;
+        &lt;div style="font-weight: bold;"&gt;Elon Musk 🔵 (FAKE)&lt;/div&gt;
+        &lt;div style="color: #8899a6;"&gt;@fake_elonmusk · 2h&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div style="font-size: 16px; line-height: 1.5;"&gt;
+      🚨 OFFICIAL GIVEAWAY! 🚨&lt;br&gt;&lt;br&gt;
+      To celebrate reaching 200M followers, I'm giving away Bitcoin!&lt;br&gt;&lt;br&gt;
+      📍 Send 0.1 BTC to this address:&lt;br&gt;
+      &lt;div style="background: #253341; padding: 8px; margin: 8px 0; border-radius: 8px; font-family: monospace; color: #ffa500;"&gt;
+        bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+      &lt;/div&gt;
+      📍 Receive 1 BTC back instantly!&lt;br&gt;&lt;br&gt;
+      ⏰ First 100 people only! Ends in 30 minutes!
+    &lt;/div&gt;
+  &lt;/div&gt;
+`;
+document.querySelector('[aria-label="Timeline: Your Home Timeline"]')?.prepend(fakePost) || document.body.prepend(fakePost);
+console.log('✅ Crypto scam post injected! Look for the post with red border.');</code>
+</pre>
+
+<hr style="margin: 40px 0; border-color: #38444d;">
+
+<h2>📋 Demo 2: Phishing URL Detection</h2>
+
+<div class="post">
+  <div class="post-header">
+    <div class="avatar"></div>
+    <div>
+      <div class="author">Facebook Support (FAKE)</div>
+      <div class="handle">@facebook_help_center · 1h</div>
+    </div>
+  </div>
+  <div class="post-text">
+    ⚠️ URGENT: Your account will be suspended!<br><br>
+
+    We detected suspicious activity on your account.<br><br>
+
+    🔒 Verify your identity immediately:<br>
+    <a href="#" class="url">http://faceb00k-security-check.com/verify</a><br><br>
+
+    You have 24 hours to verify or your account will be permanently deleted.
+  </div>
+</div>
+
+<p><strong>JavaScript to inject this post on Twitter:</strong></p>
+<pre style="background: #253341; padding: 15px; border-radius: 8px; overflow-x: auto;">
+<code>// Inject Phishing Post
+const phishingPost = document.createElement('article');
+phishingPost.setAttribute('data-testid', 'tweet');
+phishingPost.setAttribute('role', 'article');
+phishingPost.style.cssText = 'border: 2px solid #f39c12; padding: 20px; margin: 20px; border-radius: 16px; background: #1e2732;';
+phishingPost.innerHTML = `
+  &lt;div style="color: white; font-family: -apple-system, sans-serif;"&gt;
+    &lt;div style="display: flex; margin-bottom: 12px;"&gt;
+      &lt;div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); margin-right: 12px;"&gt;&lt;/div&gt;
+      &lt;div&gt;
+        &lt;div style="font-weight: bold;"&gt;Facebook Support (FAKE)&lt;/div&gt;
+        &lt;div style="color: #8899a6;"&gt;@facebook_help_center · 1h&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div style="font-size: 16px; line-height: 1.5;"&gt;
+      ⚠️ URGENT: Your account will be suspended!&lt;br&gt;&lt;br&gt;
+      We detected suspicious activity on your account.&lt;br&gt;&lt;br&gt;
+      🔒 Verify your identity immediately:&lt;br&gt;
+      &lt;a href="#" style="color: #1da1f2;"&gt;http://faceb00k-security-check.com/verify&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+      You have 24 hours to verify or your account will be permanently deleted.
+    &lt;/div&gt;
+  &lt;/div&gt;
+`;
+document.querySelector('[aria-label="Timeline: Your Home Timeline"]')?.prepend(phishingPost) || document.body.prepend(phishingPost);
+console.log('✅ Phishing post injected! Look for the post with yellow/orange border.');</code>
+</pre>
+
+<hr style="margin: 40px 0; border-color: #38444d;">
+
+<h2>📋 Demo 3: Typosquatting Detection</h2>
+
+<div class="post">
+  <div class="post-header">
+    <div class="avatar"></div>
+    <div>
+      <div class="author">PayPal (FAKE)</div>
+      <div class="handle">@paypa1_support · 3h</div>
+    </div>
+  </div>
+  <div class="post-text">
+    💰 You have a pending payment of $500!<br><br>
+
+    Click here to claim your money:<br>
+    <a href="#" class="url">http://paypa1.com/claim/payment/a8f2k9</a><br><br>
+
+    Limited time offer - expires in 6 hours!
+  </div>
+</div>
+
+<p><strong>JavaScript to inject this post on Twitter:</strong></p>
+<pre style="background: #253341; padding: 15px; border-radius: 8px; overflow-x: auto;">
+<code>// Inject Typosquatting Post
+const typoPost = document.createElement('article');
+typoPost.setAttribute('data-testid', 'tweet');
+typoPost.setAttribute('role', 'article');
+typoPost.style.cssText = 'border: 2px solid #e74c3c; padding: 20px; margin: 20px; border-radius: 16px; background: #1e2732;';
+typoPost.innerHTML = `
+  &lt;div style="color: white; font-family: -apple-system, sans-serif;"&gt;
+    &lt;div style="display: flex; margin-bottom: 12px;"&gt;
+      &lt;div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); margin-right: 12px;"&gt;&lt;/div&gt;
+      &lt;div&gt;
+        &lt;div style="font-weight: bold;"&gt;PayPal (FAKE)&lt;/div&gt;
+        &lt;div style="color: #8899a6;"&gt;@paypa1_support · 3h&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div style="font-size: 16px; line-height: 1.5;"&gt;
+      💰 You have a pending payment of $500!&lt;br&gt;&lt;br&gt;
+      Click here to claim your money:&lt;br&gt;
+      &lt;a href="#" style="color: #1da1f2;"&gt;http://paypa1.com/claim/payment/a8f2k9&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+      Limited time offer - expires in 6 hours!
+    &lt;/div&gt;
+  &lt;/div&gt;
+`;
+document.querySelector('[aria-label="Timeline: Your Home Timeline"]')?.prepend(typoPost) || document.body.prepend(typoPost);
+console.log('✅ Typosquatting post injected! Look for the post with red border.');</code>
+</pre>
+
+<hr style="margin: 40px 0; border-color: #38444d;">
+
+<h2>🎬 Recording Checklist</h2>
+
+<div style="background: #1e2732; padding: 20px; border-radius: 12px; border-left: 4px solid #27ae60;">
+  <p><strong>Before Recording:</strong></p>
+  <ul>
+    <li>✅ Install Fact-It extension in Chrome/Firefox</li>
+    <li>✅ Go to Twitter/X (https://twitter.com)</li>
+    <li>✅ Open this HTML file in another tab</li>
+    <li>✅ Start OBS Studio screen recording</li>
+    <li>✅ Set recording area to browser window only</li>
+  </ul>
+
+  <p><strong>For Each Demo:</strong></p>
+  <ol>
+    <li>Copy the JavaScript code from above</li>
+    <li>Switch to Twitter tab</li>
+    <li>Open Console (F12 or Ctrl+Shift+J)</li>
+    <li>Paste code and press Enter</li>
+    <li>Fake post appears with colored border</li>
+    <li>Scroll to the fake post</li>
+    <li>Click "Fact Check" button</li>
+    <li>Wait 3-5 seconds for result</li>
+    <li>Show the full warning message</li>
+    <li>Highlight Bulgarian text</li>
+  </ol>
+
+  <p><strong>After Recording:</strong></p>
+  <ul>
+    <li>✅ Edit in video editor (add narration)</li>
+    <li>✅ Add background music (royalty-free)</li>
+    <li>✅ Add text overlays for emphasis</li>
+    <li>✅ Export as MP4 (1080p, 30fps)</li>
+    <li>✅ Upload to YouTube with Bulgarian subtitles</li>
+  </ul>
+</div>
+
+<hr style="margin: 40px 0; border-color: #38444d;">
+
+<h2>📝 Video Title & Description (for YouTube/Social Media)</h2>
+
+<div style="background: #1e2732; padding: 20px; border-radius: 12px;">
+  <p><strong>Title (English):</strong></p>
+  <p style="font-size: 18px; color: #1da1f2;">🛡️ Fact-It: Bulgaria's #1 Free Scam Detector | Stop Crypto Scams & Phishing</p>
+
+  <p><strong>Title (Bulgarian):</strong></p>
+  <p style="font-size: 18px; color: #1da1f2;">🛡️ Fact-It: №1 Безплатен Детектор за Измами в България | Спрете Крипто Измами и Фишинг</p>
+
+  <p><strong>Description:</strong></p>
+  <p>
+    Защитете се от онлайн измами с Fact-It - първият български AI детектор за измами! Работи автоматично в Twitter, Facebook, LinkedIn и всеки уебсайт.
+    <br><br>
+    ✓ 100% БЕЗПЛАТНО<br>
+    ✓ Открива крипто измами<br>
+    ✓ Засича фишинг атаки<br>
+    ✓ Проверява сигурността на уебсайтове<br>
+    ✓ Предупреждава на български език<br>
+    <br>
+    Свалете сега от: [Your Website Link]<br>
+    Chrome Web Store: [Link]<br>
+    Firefox Add-ons: [Link]
+  </p>
+
+  <p><strong>Tags:</strong></p>
+  <p>
+    #FactIt #Bulgaria #CyberSecurity #ScamDetection #Phishing #CryptoScam #AIProtection #онлайнсигурност #измами #фишинг #България
+  </p>
+</div>
+
+</body>
+</html>
