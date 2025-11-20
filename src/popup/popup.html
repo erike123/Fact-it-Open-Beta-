@@ -140,22 +140,72 @@
             </summary>
 
             <div class="providers-content">
-              <p class="help-text">Currently available: <strong>Groq AI (100% FREE)</strong>. Multi-provider cross-verification coming soon in Pro plan!</p>
+              <!-- Learning Hub Header -->
+              <div class="learning-hub-header">
+                <h3>📚 Choose Your AI Provider</h3>
+                <p class="help-text">Each AI has unique strengths. Add your own API key for <strong>FREE unlimited checks</strong>!</p>
+              </div>
+
+              <!-- Provider Comparison Guide -->
+              <div class="provider-guide">
+                <details class="guide-details">
+                  <summary>
+                    <span class="guide-icon">💡</span>
+                    <span>Which AI should I use? (Click to learn)</span>
+                  </summary>
+                  <div class="guide-content">
+                    <div class="guide-item">
+                      <strong>🚀 Best for Speed:</strong> Groq (Llama 3.3) - Fastest inference, great for quick checks
+                    </div>
+                    <div class="guide-item">
+                      <strong>🔍 Best for Research:</strong> Perplexity - Real-time web search with source citations
+                    </div>
+                    <div class="guide-item">
+                      <strong>🧠 Best for Reasoning:</strong> Anthropic (Claude) - Deep analysis with Brave Search
+                    </div>
+                    <div class="guide-item">
+                      <strong>🌐 Best for Web Facts:</strong> OpenAI (GPT-4o) - Built-in web search tool
+                    </div>
+                    <div class="guide-tip">
+                      <strong>💎 Pro Tip:</strong> Start with Groq (free), then try others to compare results!
+                    </div>
+                  </div>
+                </details>
+              </div>
+
+              <!-- Deep Reasoning Toggle - PRO FEATURE -->
+              <div class="deep-reasoning-section">
+                <div class="deep-reasoning-header">
+                  <label class="provider-toggle">
+                    <input type="checkbox" id="deep-reasoning-enabled" disabled />
+                    <span class="provider-name">🧠 Deep Reasoning <span class="pro-badge">PRO</span></span>
+                  </label>
+                  <span class="config-status coming-soon-tag">Coming Soon</span>
+                </div>
+                <p class="help-text" style="margin-left: 24px; margin-top: 8px;">
+                  Run multiple AI providers in parallel and show consensus verdict. See which AIs agree and why!
+                </p>
+              </div>
 
               <!-- Groq Provider (FREE) - CURRENTLY AVAILABLE -->
-              <div class="provider-section">
+              <div class="provider-section provider-featured">
                 <div class="provider-header">
                   <label class="provider-toggle">
                     <input type="checkbox" id="groq-enabled" class="provider-checkbox" checked />
-                    <span class="provider-name">Groq (FREE) 🆓 ✅ AVAILABLE NOW</span>
+                    <span class="provider-name">Groq <span class="free-tag">🆓 FREE</span> <span class="recommended-tag">⭐ RECOMMENDED</span></span>
                   </label>
                   <span class="config-status" id="groq-status"></span>
+                </div>
+                <div class="provider-features">
+                  <span class="feature-badge speed">⚡ Fastest</span>
+                  <span class="feature-badge">🦙 Llama 3.3 70B</span>
+                  <span class="feature-badge">💰 Free Forever</span>
                 </div>
                 <div class="provider-config" id="groq-config">
                   <div class="form-group">
                     <label for="groq-api-key">
                       API Key
-                      <span class="optional">(Llama 3.3 70B - 100% Free Forever)</span>
+                      <span class="optional">(Optional - embedded key included)</span>
                     </label>
                     <div class="input-with-button">
                       <input
@@ -167,109 +217,123 @@
                       <button class="btn-test" id="test-groq">Test</button>
                     </div>
                     <small class="help-text">
-                      ✨ Extension works immediately with our embedded free key!
+                      ✨ Works immediately! Add your own key for unlimited checks.
                       <br />
-                      💡 Want unlimited checks? Get your own FREE API key from
-                      <a href="https://console.groq.com/" target="_blank">
-                        console.groq.com
-                      </a>
-                      (No credit card required)
+                      <a href="https://console.groq.com/" target="_blank">Get free API key →</a> (No credit card)
                     </small>
                   </div>
                 </div>
               </div>
 
-              <!-- OpenAI Provider - COMING SOON -->
-              <div class="provider-section provider-disabled">
+              <!-- OpenAI Provider - FREE with own key -->
+              <div class="provider-section">
                 <div class="provider-header">
                   <label class="provider-toggle">
-                    <input type="checkbox" id="openai-enabled" class="provider-checkbox" disabled />
-                    <span class="provider-name">OpenAI <span class="coming-soon-tag">🚀 PRO - COMING SOON</span></span>
+                    <input type="checkbox" id="openai-enabled" class="provider-checkbox" />
+                    <span class="provider-name">OpenAI <span class="free-tag">🆓 FREE</span></span>
                   </label>
-                  <span class="config-status" id="openai-status">Pro feature</span>
+                  <span class="config-status" id="openai-status"></span>
                 </div>
-                <div class="provider-config" id="openai-config" style="opacity: 0.5;">
+                <div class="provider-features">
+                  <span class="feature-badge search">🌐 Web Search</span>
+                  <span class="feature-badge">🤖 GPT-4o</span>
+                  <span class="feature-badge">📊 Structured Output</span>
+                </div>
+                <div class="provider-config" id="openai-config">
                   <div class="form-group">
                     <label for="openai-api-key">
                       API Key
-                      <span class="optional">(GPT-4o with built-in web search)</span>
+                      <span class="optional">(Your key = unlimited checks)</span>
                     </label>
                     <div class="input-with-button">
                       <input
                         type="password"
                         id="openai-api-key"
-                        placeholder="Available in Pro plan"
+                        placeholder="sk-..."
                         autocomplete="off"
-                        disabled
                       />
-                      <button class="btn-test" id="test-openai" disabled>Test</button>
+                      <button class="btn-test" id="test-openai">Test</button>
                     </div>
                     <small class="help-text">
-                      Coming soon in Pro plan for multi-AI cross-verification
+                      <strong>Best for:</strong> Web-based fact verification with GPT-4o's built-in search.
+                      <br />
+                      <a href="https://platform.openai.com/api-keys" target="_blank">Get API key →</a> (~$0.01/check)
                     </small>
                   </div>
                 </div>
               </div>
 
-              <!-- Anthropic Provider - COMING SOON -->
-              <div class="provider-section provider-disabled">
+              <!-- Anthropic Provider - FREE with own key -->
+              <div class="provider-section">
                 <div class="provider-header">
                   <label class="provider-toggle">
-                    <input type="checkbox" id="anthropic-enabled" class="provider-checkbox" disabled />
-                    <span class="provider-name">Anthropic <span class="coming-soon-tag">🚀 PRO - COMING SOON</span></span>
+                    <input type="checkbox" id="anthropic-enabled" class="provider-checkbox" />
+                    <span class="provider-name">Anthropic <span class="free-tag">🆓 FREE</span></span>
                   </label>
-                  <span class="config-status" id="anthropic-status">Pro feature</span>
+                  <span class="config-status" id="anthropic-status"></span>
                 </div>
-                <div class="provider-config" id="anthropic-config" style="opacity: 0.5;">
+                <div class="provider-features">
+                  <span class="feature-badge reasoning">🧠 Best Reasoning</span>
+                  <span class="feature-badge">🔍 Brave Search</span>
+                  <span class="feature-badge">🎯 Claude 3.5</span>
+                </div>
+                <div class="provider-config" id="anthropic-config">
                   <div class="form-group">
                     <label for="anthropic-api-key">
                       API Key
-                      <span class="optional">(Claude 3.5 with Brave Search)</span>
+                      <span class="optional">(Your key = unlimited checks)</span>
                     </label>
                     <div class="input-with-button">
                       <input
                         type="password"
                         id="anthropic-api-key"
-                        placeholder="Available in Pro plan"
+                        placeholder="sk-ant-..."
                         autocomplete="off"
-                        disabled
                       />
-                      <button class="btn-test" id="test-anthropic" disabled>Test</button>
+                      <button class="btn-test" id="test-anthropic">Test</button>
                     </div>
                     <small class="help-text">
-                      Coming soon in Pro plan for multi-AI cross-verification
+                      <strong>Best for:</strong> Complex claims requiring deep reasoning and analysis.
+                      <br />
+                      <a href="https://console.anthropic.com/settings/keys" target="_blank">Get API key →</a> (~$0.015/check)
                     </small>
                   </div>
                 </div>
               </div>
 
-              <!-- Perplexity Provider - COMING SOON -->
-              <div class="provider-section provider-disabled">
+              <!-- Perplexity Provider - FREE with own key -->
+              <div class="provider-section">
                 <div class="provider-header">
                   <label class="provider-toggle">
-                    <input type="checkbox" id="perplexity-enabled" class="provider-checkbox" disabled />
-                    <span class="provider-name">Perplexity <span class="coming-soon-tag">🚀 PRO - COMING SOON</span></span>
+                    <input type="checkbox" id="perplexity-enabled" class="provider-checkbox" />
+                    <span class="provider-name">Perplexity <span class="free-tag">🆓 FREE</span></span>
                   </label>
-                  <span class="config-status" id="perplexity-status">Pro feature</span>
+                  <span class="config-status" id="perplexity-status"></span>
                 </div>
-                <div class="provider-config" id="perplexity-config" style="opacity: 0.5;">
+                <div class="provider-features">
+                  <span class="feature-badge citations">📚 Citations</span>
+                  <span class="feature-badge">🔄 Real-time Search</span>
+                  <span class="feature-badge">🏆 #1 Factuality</span>
+                </div>
+                <div class="provider-config" id="perplexity-config">
                   <div class="form-group">
                     <label for="perplexity-api-key">
                       API Key
-                      <span class="optional">(Sonar Pro with real-time search)</span>
+                      <span class="optional">(Your key = unlimited checks)</span>
                     </label>
                     <div class="input-with-button">
                       <input
                         type="password"
                         id="perplexity-api-key"
-                        placeholder="Available in Pro plan"
+                        placeholder="pplx-..."
                         autocomplete="off"
-                        disabled
                       />
-                      <button class="btn-test" id="test-perplexity" disabled>Test</button>
+                      <button class="btn-test" id="test-perplexity">Test</button>
                     </div>
                     <small class="help-text">
-                      Coming soon in Pro plan for multi-AI cross-verification
+                      <strong>Best for:</strong> Research with source citations. Leads SimpleQA benchmark (0.858 F-score).
+                      <br />
+                      <a href="https://www.perplexity.ai/settings/api" target="_blank">Get API key →</a> ($5 free credits/month)
                     </small>
                   </div>
                 </div>

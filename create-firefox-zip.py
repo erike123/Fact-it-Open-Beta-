@@ -8,7 +8,7 @@ from pathlib import Path
 
 def create_firefox_zip():
     dist_dir = Path('dist')
-    output_zip = Path('fact-it-firefox-v0.1.0.zip')
+    output_zip = Path('fact-it-firefox-v0.2.0.zip')
 
     # Remove old zip if exists
     if output_zip.exists():
@@ -18,8 +18,8 @@ def create_firefox_zip():
 
     with zipfile.ZipFile(output_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(dist_dir):
-            # Skip .vite and src folders
-            dirs[:] = [d for d in dirs if d not in ['.vite', 'src']]
+            # Skip .vite folder only (src/popup is needed for popup.html)
+            dirs[:] = [d for d in dirs if d not in ['.vite']]
 
             for file in files:
                 file_path = Path(root) / file
